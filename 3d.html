@@ -1,46 +1,50 @@
-<!-- Paste this entire code in a WordPress Custom HTML block -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>360° Panorama Exhibit</title>
+  <!-- Include Panellum CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <style>
+    /* Reset margins/padding and extend page height for scrolling */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 200vh; /* Adjust if needed */
+      overflow-x: hidden;
+    }
+    /* Container for the 360° panorama */
+    #panorama {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container for the panorama -->
+  <div id="panorama"></div>
+  <!-- Include Panellum JS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script>
+    // Initialize the panorama viewer using Panellum.
+    var viewer = pannellum.viewer('panorama', {
+        "type": "equirectangular",
+        "panorama": "/assets/test1.jpg", // Replace with your 360 image URL
+        "autoLoad": true,
+        "autoRotate": 0,
+        "yaw": 0,
+        "pitch": 0,
+        "hfov": 110
+    });
 
-<!-- Include Panellum CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
-
-<style>
-  /* Reset margins/padding and extend page height for scrolling */
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 200vh; /* Adjust if needed */
-    overflow-x: hidden;
-  }
-  /* Container for the 360° panorama */
-  #panorama {
-    width: 100%;
-    height: 100vh;
-  }
-</style>
-
-<!-- Container for the panorama -->
-<div id="panorama"></div>
-
-<!-- Include Panellum JS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-<script>
-  // Initialize the panorama viewer using Panellum.
-  var viewer = pannellum.viewer('panorama', {
-      "type": "equirectangular",
-      "panorama": "//assets/test1.jpg", // Replace with your 360 image URL
-      "autoLoad": true,
-      "autoRotate": 0,  // Disable auto-rotation
-      "yaw": 0,         // Initial horizontal rotation angle
-      "pitch": 0,       // Initial vertical rotation angle
-      "hfov": 110       // Horizontal field of view; adjust as needed
-  });
-
-  // Listen for scroll events and update the panorama's yaw.
-  window.addEventListener("scroll", function() {
-      var scrollPos = window.scrollY;
-      // Map the scroll value to a yaw angle.
-      // For example, 1000 pixels of scroll equals a full 360° rotation.
-      var newYaw = (scrollPos / 1000) * 360;
-      viewer.setYaw(newYaw);
-  });
-</script>
+    // Listen for scroll events and update the panorama's yaw.
+    window.addEventListener("scroll", function() {
+        var scrollPos = window.scrollY;
+        // For example, 1000 pixels of scroll equals a full 360° rotation.
+        var newYaw = (scrollPos / 1000) * 360;
+        viewer.setYaw(newYaw);
+    });
+  </script>
+</body>
+</html>
