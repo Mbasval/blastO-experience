@@ -14,14 +14,16 @@
   <style>
     /* ----------------------------------------------------------
        GLOBAL / BODY
-       - No scrolling, let Pannellum handle panorama dragging.
        ---------------------------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      overflow: hidden; /* No scrolling on the body */
+      /* No scrolling on the body; Pannellum handles rotation by drag */
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
     }
 
     /* ----------------------------------------------------------
@@ -52,9 +54,8 @@
       border: none;
       color: #fff;
       font-size: 24px;
-      font-weight: 700; /* thick */
+      font-weight: 700; /* thick icons */
       cursor: pointer;
-      outline: none;
     }
     .ctrlBtn:hover {
       opacity: 0.7;
@@ -92,70 +93,77 @@
     }
 
     /* ----------------------------------------------------------
-       MAIN TEXT OVERLAY (ALWAYS CENTERED, NO BORDER)
+       MAIN TEXT OVERLAY
+       Always centered, but narrower so user can drag the panorama around it.
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      z-index: 999;
       color: #fff;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      z-index: 999;
-      width: 90%;           /* So it fits on mobile screens */
-      max-width: 420px;     /* Limit width on larger screens */
-      max-height: 90vh;     /* So it doesn't overflow vertically on small screens */
-      overflow-y: auto;     /* Scroll inside if text is too tall */
-      pointer-events: auto; /* Let user scroll/tap inside text area */
-      box-sizing: border-box;
+
+      /* Make it scrollable if content is tall */
+      max-height: 90vh;
+      overflow-y: auto;
+      pointer-events: auto;
+
+      /* Desktop sizing */
+      width: 60%;       /* narrower so there's plenty of space around it */
+      max-width: 480px; /* limit it for large screens */
       padding: 10px;
+      box-sizing: border-box;
     }
-    /* Title: Large & Bold */
+    /* Title, Subtitle, Intro, Body styling */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
-    /* Subtitle: 14px, normal weight */
     #textOverlay .subtitle {
       font-size: 14px;
       margin-bottom: 1em;
       font-weight: 400;
     }
-    /* Intro: 12px, italic, light */
-    #textOverlay .intro {
+    .intro {
       font-size: 12px;
       font-style: italic;
       font-weight: 300;
       line-height: 1.4;
       margin: 0.6em 0;
     }
-    /* Body: 12px normal */
-    #textOverlay .body {
+    .body {
       font-size: 12px;
       font-weight: 400;
       line-height: 1.4;
       margin: 0.6em 0;
     }
 
-    /* On small screens, shrink fonts a bit if desired */
+    /* On phones, we shrink the width even further so there's guaranteed space for dragging. */
     @media (max-width: 600px) {
+      #textOverlay {
+        width: 70%;
+        max-width: none;
+        padding: 10px;
+      }
       #textOverlay .title {
         font-size: 1.6em;
       }
       #textOverlay .subtitle {
         font-size: 13px;
       }
-      #textOverlay .intro {
+      .intro {
         font-size: 11px;
       }
-      #textOverlay .body {
+      .body {
         font-size: 11px;
       }
     }
 
     /* ----------------------------------------------------------
-       DESKTOP CORNERS (HIDDEN ON MOBILE)
+       CORNERS (ALWAYS VISIBLE, even on mobile)
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
@@ -164,16 +172,16 @@
       line-height: 1.4;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       z-index: 9999;
+      width: 180px; /* slightly smaller so they’re not too wide on mobile */
+      box-sizing: border-box;
     }
     #bottomLeftCorner {
       bottom: 20px;
       left: 20px;
-      width: 220px;
     }
     #bottomRightCorner {
       bottom: 20px;
       right: 20px;
-      width: 220px;
       text-align: right;
     }
     .cornerTitle {
@@ -182,41 +190,13 @@
       margin-bottom: 5px;
       display: block;
     }
-    @media (max-width: 600px) {
-      #bottomLeftCorner, #bottomRightCorner {
-        display: none;
-      }
-    }
 
     /* ----------------------------------------------------------
-       MOBILE FOOTER (2 Columns) INSIDE #textOverlay
+       NO "two-column" mobile footer, since corners remain always
+       visible as you requested.
+       (If you still want a 2-column inside the text, we can do that,
+       but this code keeps corners visible for all screens.)
        ---------------------------------------------------------- */
-    #mobileFooter {
-      display: none; /* hidden on desktop */
-      margin-top: 20px;
-    }
-    .mobileColumn {
-      font-size: 12px;
-      line-height: 1.4;
-      margin-right: 20px;
-    }
-    .mobileColumn:last-child {
-      margin-right: 0;
-    }
-    .cornerTitleMobile {
-      font-weight: 700;
-      font-size: 13px;
-      margin-bottom: 5px;
-      display: block;
-    }
-    @media (max-width: 600px) {
-      #mobileFooter {
-        display: flex; /* show on mobile */
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-
   </style>
 </head>
 <body>
@@ -234,7 +214,7 @@
   <!-- Top-right Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- MAIN TEXT OVERLAY (ALWAYS CENTERED) -->
+  <!-- MAIN TEXT OVERLAY (Centered, Scrollable, Narrow Enough to Drag) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
@@ -284,26 +264,9 @@
     <p class="body" style="margin-top: 1em;">
       <strong>Raúl Márquez, 2025</strong>
     </p>
-
-    <!-- MOBILE FOOTER (2 columns) -->
-    <div id="mobileFooter">
-      <div class="mobileColumn">
-        <span class="cornerTitleMobile">Centro Cultural Plaza Fátima</span>
-        Río Éufrates y Av. Vasconcelos,<br>
-        Del Valle Sector Fátima,<br>
-        66220 San Pedro Garza García<br>
-        N.L. México
-      </div>
-      <div class="mobileColumn">
-        <span class="cornerTitleMobile">Exposición<br>31.02 — 01.03 (2024)</span>
-        Lunes a Viernes 10:00 AM — 8:00 PM<br>
-        Sábado 10:00 AM — 7:00 PM<br>
-        Acceso Libre
-      </div>
-    </div>
   </div>
 
-  <!-- DESKTOP CORNERS -->
+  <!-- CORNERS (ALWAYS VISIBLE) -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     Río Éufrates y Av. Vasconcelos,<br>
@@ -321,10 +284,10 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the panorama (drag to rotate; no default controls)
+    // Initialize the panorama. No default controls => user can drag to rotate.
     var viewer = pannellum.viewer('panorama', {
       type: 'equirectangular',
-      panorama: '/assets/test3.jpg', // Replace with your 360 image path
+      panorama: '/assets/test1.jpg', // Replace with your 360 image path
       autoLoad: true,
       showControls: false,
       yaw: 0,
@@ -332,14 +295,12 @@
       hfov: 110
     });
 
-    // Custom Buttons
+    // Custom zoom & fullscreen
     document.getElementById('zoomIn').addEventListener('click', function(){
-      var currHFOV = viewer.getHfov();
-      viewer.setHfov(currHFOV - 5);
+      viewer.setHfov(viewer.getHfov() - 5);
     });
     document.getElementById('zoomOut').addEventListener('click', function(){
-      var currHFOV = viewer.getHfov();
-      viewer.setHfov(currHFOV + 5);
+      viewer.setHfov(viewer.getHfov() + 5);
     });
     document.getElementById('toggleFullscreen').addEventListener('click', function(){
       viewer.toggleFullscreen();
