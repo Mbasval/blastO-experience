@@ -2,41 +2,47 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Responsive 360° Exhibit with Center Text & Corners</title>
+  <title>Mutanza 360° Exhibit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Load Arimo from Google Fonts -->
+  <!-- Load Arimo from Google Fonts (light 300, normal 400, bold 700) -->
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@300;400;700&display=swap" rel="stylesheet">
 
   <!-- Include Panellum CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 
   <style>
-    /* -------------------------------
-       Global + Body Scroll
-       ------------------------------- */
+    /* ----------------------------------------------------------
+       GLOBAL + BODY SCROLL
+    ---------------------------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      overflow-y: hidden; /* Disable vertical scroll */
-    }
-    /* Enable horizontal scrolling for rotation */
-    body {
-      width: 200vw; /* Extra horizontal space for horizontal scroll */
+      /* We'll allow horizontal scroll on desktop for the panorama rotation */
+      overflow-y: hidden;
+      width: 200vw; /* Extra horizontal space */
       height: 100vh;
       overflow-x: scroll;
     }
+    /* On small screens/portrait, reduce the horizontal width. */
     @media (orientation: portrait) {
       body {
-        width: 150vw; /* Slightly less horizontal scroll for portrait */
+        width: 150vw;
+      }
+    }
+    /* A further tweak for very small screens if needed */
+    @media (max-width: 600px) {
+      body {
+        width: 100vw; /* Prevent overscrolling horizontally on tiny phones */
+        overflow-x: hidden;
       }
     }
 
-    /* -------------------------------
-       Panorama
-       ------------------------------- */
+    /* ----------------------------------------------------------
+       PANORAMA
+    ---------------------------------------------------------- */
     #panorama {
       position: fixed;
       top: 0;
@@ -47,93 +53,123 @@
       max-height: 100vh;
     }
 
-    /* -------------------------------
-       Centered Text Overlay
-       ------------------------------- */
+    /* ----------------------------------------------------------
+       CUSTOM 360 CONTROLS
+       (We'll hide default Pannellum controls and build our own)
+    ---------------------------------------------------------- */
+    #customControls {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column; /* Stack vertically: +, -, [ ] */
+      align-items: flex-start;
+      gap: 12px; /* Space between buttons */
+      z-index: 9999; /* Above the panorama */
+      pointer-events: auto; /* Make them clickable */
+    }
+    .ctrlBtn {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 400;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 10px;
+      cursor: pointer;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      transition: background 0.2s;
+    }
+    .ctrlBtn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    /* On small screens, shrink them a bit */
+    @media (max-width: 600px) {
+      #customControls {
+        top: 10px;
+        left: 10px;
+        gap: 8px;
+      }
+      .ctrlBtn {
+        font-size: 18px;
+        padding: 4px 8px;
+      }
+    }
+
+    /* ----------------------------------------------------------
+       TOP-RIGHT CORNER (info@blast-o.com)
+    ---------------------------------------------------------- */
+    #topRightCorner {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 400;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      z-index: 9999;
+    }
+    @media (max-width: 600px) {
+      #topRightCorner {
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+      }
+    }
+
+    /* ----------------------------------------------------------
+       CENTER TEXT OVERLAY
+    ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
-      left: 50%;
+      /* Shift left so it appears more to the left side, but still “centered” vertically */
+      left: 40%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-40%, -50%);
       pointer-events: none; /* Clicks pass through to panorama */
-      text-align: left;
       color: #fff;
-      max-width: 500px; /* Wider text box */
+      max-width: 450px; /* Make it a bit narrower if you want it to appear as in the photo */
       padding: 20px;
       z-index: 999;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
     #textOverlay .title {
-      font-size: 3em;
-      font-weight: bold;
-      margin-bottom: 0.5em;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      font-size: 2em;
+      font-weight: 700; /* Bold */
+      margin-bottom: 0.3em;
+    }
+    #textOverlay .subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 1em;
     }
     /* Intro: 12px, light + italic */
     #textOverlay .intro {
       font-size: 12px;
-      font-weight: 300;   /* Light weight */
-      font-style: italic; /* Italic */
-      margin: 0.5em 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0.6em 0;
+      line-height: 1.4;
     }
     /* Body: 12px, normal weight */
     #textOverlay .body {
       font-size: 12px;
       font-weight: 400;
-      margin: 0.5em 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-
-    /* -------------------------------
-       Corner Text
-       ------------------------------- */
-    .cornerText {
-      position: fixed;
-      color: #fff;
       line-height: 1.4;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      z-index: 9999; /* Above panorama */
+      margin: 0.6em 0;
     }
-    /* Slightly bigger default corner text */
-    .cornerText span {
-      font-size: 14px;
-      font-weight: 400;
-    }
-    #topRightCorner {
-      top: 15px;
-      right: 20px;
-      text-align: right;
-    }
-    #bottomLeftCorner {
-      bottom: 20px;
-      left: 20px;
-      text-align: left;
-      width: 220px; /* A bit wider to match the layout in the image */
-    }
-    #bottomRightCorner {
-      bottom: 20px;
-      right: 20px;
-      text-align: right;
-      width: 220px;
-    }
-    /* Larger bold lines in corners */
-    #bottomLeftCorner .titleCorner,
-    #bottomRightCorner .titleCorner {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    /* -------------------------------
-       Responsive Adjustments
-       ------------------------------- */
     @media (max-width: 600px) {
+      /* On very small screens, center it fully and reduce font sizes */
       #textOverlay {
+        left: 50%;
+        transform: translate(-50%, -50%);
         max-width: 80%;
+        padding: 15px;
       }
       #textOverlay .title {
-        font-size: 2em;
+        font-size: 1.5em;
+      }
+      #textOverlay .subtitle {
+        font-size: 13px;
       }
       #textOverlay .intro {
         font-size: 11px;
@@ -141,51 +177,78 @@
       #textOverlay .body {
         font-size: 11px;
       }
-      .cornerText span,
-      #topRightCorner, 
-      #bottomLeftCorner, 
-      #bottomRightCorner {
+    }
+
+    /* ----------------------------------------------------------
+       BOTTOM CORNERS
+    ---------------------------------------------------------- */
+    .cornerBox {
+      position: fixed;
+      color: #fff;
+      line-height: 1.4;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      z-index: 9999;
+      font-size: 14px;
+    }
+    #bottomLeftCorner {
+      bottom: 20px;
+      left: 20px;
+      text-align: left;
+      width: 220px;
+    }
+    #bottomRightCorner {
+      bottom: 20px;
+      right: 20px;
+      text-align: right;
+      width: 220px;
+    }
+    .cornerTitle {
+      font-weight: 700; /* Bold for the location / expo title */
+      font-size: 16px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .cornerBox {
         font-size: 12px;
       }
-      #bottomLeftCorner .titleCorner,
-      #bottomRightCorner .titleCorner {
+      .cornerTitle {
         font-size: 14px;
+      }
+      #bottomLeftCorner, #bottomRightCorner {
+        bottom: 10px;
+        width: 180px;
+      }
+      #bottomLeftCorner {
+        left: 10px;
+      }
+      #bottomRightCorner {
+        right: 10px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Panorama Container -->
+
+  <!-- 360° Panorama Container -->
   <div id="panorama"></div>
 
-  <!-- Corner: Top Right -->
-  <div id="topRightCorner" class="cornerText">
-    <span>info@blast-o.com</span>
+  <!-- Custom 360 Controls -->
+  <div id="customControls">
+    <div class="ctrlBtn" id="zoomIn">+</div>
+    <div class="ctrlBtn" id="zoomOut">-</div>
+    <div class="ctrlBtn" id="toggleFullscreen">[ ]</div>
   </div>
 
-  <!-- Corner: Bottom Left -->
-  <div id="bottomLeftCorner" class="cornerText">
-    <span class="titleCorner">Centro Cultural Plaza Fátima</span>
-    <span>Río Éufrates y Av. Vasconcelos,<br>
-    Del Valle Sector Fátima,<br>
-    66220 San Pedro Garza García<br>
-    N.L. México</span>
-  </div>
-
-  <!-- Corner: Bottom Right -->
-  <div id="bottomRightCorner" class="cornerText">
-    <span class="titleCorner">Exposición<br>31.02 — 01.03 (2024)</span>
-    <span>Lunes a Viernes 10:00 AM — 8:00 PM<br>
-    Sábado 10:00 AM — 7:00 PM<br>
-    Acceso Libre</span>
-  </div>
+  <!-- Top Right Corner: Info Email -->
+  <div id="topRightCorner">info@blast-o.com</div>
 
   <!-- Centered Text Overlay -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
+    <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
 
     <p class="intro">
-      Contemplación y tiempo: hacer cantar las piedras<br><br>
       "Hablar sola, como las piedras.<br>
       Olvidemos que es síntoma de locura y recordemos que el soliloquio puede ser,<br>
       al contrario, la cura a la excesiva humanidad"<br>
@@ -193,38 +256,38 @@
     </p>
 
     <p class="body">
-      Todo lo observable nos da cuenta del tiempo. Movimientos, sonidos, corrosión, emociones...
-      Desde un breve segundo hasta una extensa era, resultan conformados por la sucesión simultánea
-      de una infinidad de eventos. En tal caso, la observación se convierte en un instrumento para entender
-      la naturaleza de dichos acontecimientos y sus relaciones; la contemplación, entonces, resultaría una
+      Todo lo observable nos da cuenta del tiempo. Movimientos, sonidos, corrosión, emociones... 
+      Desde un breve segundo hasta una extensa era, resultan conformados por la sucesión simultánea 
+      de una infinidad de eventos. En tal caso, la observación se convierte en un instrumento para entender 
+      la naturaleza de dichos acontecimientos y sus relaciones; la contemplación, entonces, resultaría una 
       herramienta casi quirúrgica para diseccionar los órganos del tiempo.
     </p>
     <p class="body">
-      La obra de Blast se desarrolla en esta lógica, donde la templanza es condición para entender su orden.
+      La obra de Blast se desarrolla en esta lógica, donde la templanza es condición para entender su orden. 
       En ella se proyecta una inclinación por la quietud y el equilibrio.
     </p>
     <p class="body">
-      Las piedras, manifestadas en sus trazos, nos hablan del tiempo sedimentado, del tiempo contenido en su propia
-      estructura. Sísifos ya no lucha contra el peso de su propia piedra, sino que se sienta a contemplarla, tal vez
-      como una forma de reconocerse frente a la eternidad de su condena. Entonces el tiempo devela sus matices, y la
+      Las piedras, manifestadas en sus trazos, nos hablan del tiempo sedimentado, del tiempo contenido en su propia 
+      estructura. Sísifos ya no lucha contra el peso de su propia piedra, sino que se sienta a contemplarla, tal vez 
+      como una forma de reconocerse frente a la eternidad de su condena. Entonces el tiempo devela sus matices, y la 
       piedra canta su edad geológica.
     </p>
     <p class="body">
-      Así también se manifiesta el tiempo de la propia obra, donde la creación se acerca más al acto de observar.
-      Se muestra el proceso creativo en sus distintas eras, en los soportes explorados y las diversas fases de sus
-      inquietudes. Podemos contemplar los elementos gráficos que la conforman y cómo prevalecen a través de sus medios,
-      en una suerte de sedimentación creativa. La obra se va depurando y solo lo necesario perdura, derivando en una
+      Así también se manifiesta el tiempo de la propia obra, donde la creación se acerca más al acto de observar. 
+      Se muestra el proceso creativo en sus distintas eras, en los soportes explorados y las diversas fases de sus 
+      inquietudes. Podemos contemplar los elementos gráficos que la conforman y cómo prevalecen a través de sus medios, 
+      en una suerte de sedimentación creativa. La obra se va depurando y solo lo necesario perdura, derivando en una 
       producción artística meditada y consistente, donde hasta el más mínimo gesto remite a su autor.
     </p>
     <p class="body">
-      Este repaso es un ensamble donde armonizan las montañas, los ríos y la urbe; la escultura, la instalación y el graffiti.
-      Blast nos da cuenta de su propio tiempo, de su caminar y meditaciones, su relación con el espacio urbano y cómo ha dado
-      forma a los ritmos que este le dicta. Así, apropiándose de diversos materiales, ha edificado su íntima arquitectura
-      para hablarnos también de aquello que antecede a la ciudad: el territorio en toda su extensión histórica y geográfica.
+      Este repaso es un ensamble donde armonizan las montañas, los ríos y la urbe; la escultura, la instalación y el graffiti. 
+      Blast nos da cuenta de su propio tiempo, de su caminar y meditaciones, su relación con el espacio urbano y cómo ha dado 
+      forma a los ritmos que este le dicta. Así, apropiándose de diversos materiales, ha edificado su íntima arquitectura 
+      para hablarnos también de aquello que antecede a la ciudad: el territorio en toda su extensión histórica y geográfica. 
       Por ello podemos sentir esa intención de abarcar lo visible y lo invisible, de develar las capas que sustentan todo lo que vemos.
     </p>
     <p class="body">
-      Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia
+      Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia 
       de sus formas y su sutileza, y a elaborar en la templanza nuestro propio soliloquio.
     </p>
     <p class="body" style="margin-top: 1em;">
@@ -232,27 +295,62 @@
     </p>
   </div>
 
-  <!-- Include Panellum JS -->
+  <!-- Bottom Left Corner (Location) -->
+  <div id="bottomLeftCorner" class="cornerBox">
+    <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
+    Río Éufrates y Av. Vasconcelos,<br>
+    Del Valle Sector Fátima,<br>
+    66220 San Pedro Garza García<br>
+    N.L. México
+  </div>
+
+  <!-- Bottom Right Corner (Exhibition) -->
+  <div id="bottomRightCorner" class="cornerBox">
+    <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
+    Lunes a Viernes 10:00 AM — 8:00 PM<br>
+    Sábado 10:00 AM — 7:00 PM<br>
+    Acceso Libre
+  </div>
+
+  <!-- PANELLUM (JS) -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize Panellum viewer with your 360° image
+    // Initialize Panellum viewer with custom controls hidden
     var viewer = pannellum.viewer('panorama', {
       "type": "equirectangular",
       "panorama": "/assets/test1.jpg", // <-- Replace with your 360 image path
       "autoLoad": true,
-      "autoRotate": 0,
+      "showControls": false, // Hide the default controls
       "yaw": 0,
       "pitch": 0,
       "hfov": 110,
       "multiRes": false
     });
 
-    // Map horizontal scroll to panorama rotation (0-360°)
-    window.addEventListener('scroll', function() {
+    // Map horizontal scroll to panorama rotation (0 - 360°)
+    window.addEventListener("scroll", function() {
       var scrollPos = window.scrollX;
       var maxScroll = document.body.scrollWidth - window.innerWidth;
-      var newYaw = (scrollPos / maxScroll) * 360;
-      viewer.setYaw(newYaw);
+      if (maxScroll > 0) {
+        var newYaw = (scrollPos / maxScroll) * 360;
+        viewer.setYaw(newYaw);
+      }
+    });
+
+    // Custom Buttons
+    document.getElementById('zoomIn').addEventListener('click', function(){
+      // Zoom in by decreasing HFOV
+      var currHFOV = viewer.getHfov();
+      viewer.setHfov(currHFOV - 5);
+    });
+    document.getElementById('zoomOut').addEventListener('click', function(){
+      // Zoom out by increasing HFOV
+      var currHFOV = viewer.getHfov();
+      viewer.setHfov(currHFOV + 5);
+    });
+    document.getElementById('toggleFullscreen').addEventListener('click', function(){
+      // Toggle Fullscreen
+      viewer.toggleFullscreen();
     });
   </script>
 </body>
