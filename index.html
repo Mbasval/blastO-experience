@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Responsive 360° Exhibit with Centered Text</title>
+  <title>Responsive 360° Exhibit with Centered Text and Corners</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Load Open Sans from Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- Load Arimo from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
+
   <!-- Include Panellum CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+
   <style>
-    /* Global resets, font and background */
+    /* Global reset and font */
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'Arimo', sans-serif;
       background: #000;
       overflow-y: hidden; /* Disable vertical scroll */
     }
+
     /* Enable horizontal scrolling for rotation */
     body {
-      width: 200vw;  /* Extra horizontal space */
+      width: 200vw; /* Extra horizontal space for horizontal scroll */
       height: 100vh;
       overflow-x: scroll;
     }
     @media (orientation: portrait) {
       body {
-        width: 150vw; /* Slightly less horizontal scroll for portrait */
+        width: 150vw; /* Slightly less horizontal scroll for portrait devices */
       }
     }
-    
-    /* Panorama container: fills the viewport but constrained to device dimensions */
+
+    /* Panorama container: fills the viewport */
     #panorama {
       position: fixed;
       top: 0;
@@ -39,42 +43,69 @@
       max-width: 100vw;
       max-height: 100vh;
     }
-    
+
     /* Centered Text Overlay with limited width for readability */
     #textOverlay {
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      pointer-events: none; /* Allow interactions with the panorama */
+      pointer-events: none; /* Allow clicks to pass through to the panorama */
       text-align: left;
       color: #fff;
-      max-width: 400px; /* Limit container width */
-      padding: 20px; /* Add some padding for better readability */
+      max-width: 400px;
+      padding: 20px;
+      z-index: 999; /* Keep it above the panorama */
     }
-    
-    /* Title: "Mutanza" (left-aligned) */
+
+    /* Title: "MUTANZA" */
     #textOverlay .title {
       font-size: 3em;
       font-weight: bold;
       margin-bottom: 1em;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
-    
-    /* First lorem ipsum paragraph: 12px */
+
+    /* Intro paragraph: smaller font size */
     #textOverlay .intro {
       font-size: 12px;
       margin: 0.5em 0;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
-    
-    /* Next four lorem ipsum paragraphs: 14px */
+
+    /* Body paragraphs: bigger font */
     #textOverlay .body {
       font-size: 14px;
       margin: 0.5em 0;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
-    
+
+    /* Corner text styling */
+    .cornerText {
+      position: fixed;
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.4;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      z-index: 9999; /* Ensure it’s above the panorama */
+      max-width: 200px;
+    }
+    #topRightCorner {
+      top: 15px;
+      right: 20px;
+      text-align: right;
+    }
+    #bottomLeftCorner {
+      bottom: 20px;
+      left: 20px;
+      text-align: left;
+    }
+    #bottomRightCorner {
+      bottom: 20px;
+      right: 20px;
+      text-align: right;
+    }
+
     /* Responsive text sizing for small screens */
     @media (max-width: 600px) {
       #textOverlay .title {
@@ -86,49 +117,105 @@
       #textOverlay .body {
         font-size: 13px;
       }
+      .cornerText {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
+
   <!-- 360° Panorama Container -->
   <div id="panorama"></div>
-  
+
+  <!-- CORNER TEXT: TOP RIGHT -->
+  <div id="topRightCorner" class="cornerText">
+    info@blast-o.com
+  </div>
+
+  <!-- CORNER TEXT: BOTTOM LEFT -->
+  <div id="bottomLeftCorner" class="cornerText">
+    <strong>Centro Cultural Plaza Fátima</strong><br>
+    Río Éufrates y Av. Vasconcelos,<br>
+    Del Valle Sector Fátima,<br>
+    66220 San Pedro Garza García<br>
+    N.L. México
+  </div>
+
+  <!-- CORNER TEXT: BOTTOM RIGHT -->
+  <div id="bottomRightCorner" class="cornerText">
+    <strong>Exposición<br>
+    31.02 — 01.03 (2024)</strong><br>
+    Lunes a Viernes 10:00 AM — 8:00 PM<br>
+    Sábado 10:00 AM — 7:00 PM<br>
+    Acceso Libre
+  </div>
+
   <!-- Centered Text Overlay -->
   <div id="textOverlay">
-    <div class="title">Mutanza</div>
+    <div class="title">MUTANZA</div>
     <p class="intro">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-    </p>
-    <br>
-    <p class="body">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-    <p class="body">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      Contemplación y tiempo: hacer cantar las piedras<br><br>
+      "Hablar sola, como las piedras.<br>
+      Olvidemos que es síntoma de locura y recordemos que el soliloquio puede ser,<br>
+      al contrario, la cura a la excesiva humanidad"<br>
+      <em>Diana Garza Islas</em>
     </p>
     <p class="body">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      Todo lo observable nos da cuenta del tiempo. Movimientos, sonidos, corrosión, emociones... 
+      Desde un breve segundo hasta una extensa era, resultan conformados por la sucesión simultánea 
+      de una infinidad de eventos. En tal caso, la observación se convierte en un instrumento para entender 
+      la naturaleza de dichos acontecimientos y sus relaciones; la contemplación, entonces, resultaría una 
+      herramienta casi quirúrgica para diseccionar los órganos del tiempo.
     </p>
     <p class="body">
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      La obra de Blast se desarrolla en esta lógica, donde la templanza es condición para entender su orden. 
+      En ella se proyecta una inclinación por la quietud y el equilibrio.
+    </p>
+    <p class="body">
+      Las piedras, manifestadas en sus trazos, nos hablan del tiempo sedimentado, del tiempo contenido en su propia 
+      estructura. Sísifos ya no lucha contra el peso de su propia piedra, sino que se sienta a contemplarla, tal vez 
+      como una forma de reconocerse frente a la eternidad de su condena. Entonces el tiempo devela sus matices, y la 
+      piedra canta su edad geológica.
+    </p>
+    <p class="body">
+      Así también se manifiesta el tiempo de la propia obra, donde la creación se acerca más al acto de observar. 
+      Se muestra el proceso creativo en sus distintas eras, en los soportes explorados y las diversas fases de sus 
+      inquietudes. Podemos contemplar los elementos gráficos que la conforman y cómo prevalecen a través de sus medios, 
+      en una suerte de sedimentación creativa. La obra se va depurando y solo lo necesario perdura, derivando en una 
+      producción artística meditada y consistente, donde hasta el más mínimo gesto remite a su autor.
+    </p>
+    <p class="body">
+      Este repaso es un ensamble donde armonizan las montañas, los ríos y la urbe; la escultura, la instalación y el graffiti. 
+      Blast nos da cuenta de su propio tiempo, de su caminar y meditaciones, su relación con el espacio urbano y cómo ha dado 
+      forma a los ritmos que este le dicta. Así, apropiándose de diversos materiales, ha edificado su íntima arquitectura 
+      para hablarnos también de aquello que antecede a la ciudad: el territorio en toda su extensión histórica y geográfica. 
+      Por ello podemos sentir esa intención de abarcar lo visible y lo invisible, de develar las capas que sustentan todo lo que vemos.
+    </p>
+    <p class="body">
+      Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia 
+      de sus formas y su sutileza, y a elaborar en la templanza nuestro propio soliloquio.
+    </p>
+    <p class="body" style="margin-top: 1em;">
+      <strong>Raúl Márquez, 2025</strong>
     </p>
   </div>
-  
+
   <!-- Include Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
     // Initialize Panellum viewer with your 360° image
     var viewer = pannellum.viewer('panorama', {
       "type": "equirectangular",
-      "panorama": "/assets/test3.jpg",  // Your 360 image path
+      "panorama": "/assets/test1.jpg", // <-- Replace with your own 360 image path
       "autoLoad": true,
       "autoRotate": 0,
       "yaw": 0,
       "pitch": 0,
       "hfov": 110,
-      "multiRes": false  // Use single resolution to mitigate "too big" errors on some devices
+      "multiRes": false
     });
-    
+
     // Map horizontal scroll to panorama rotation (0 to 360°)
     window.addEventListener("scroll", function() {
       var scrollPos = window.scrollX;
