@@ -2,87 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Responsive 360° Exhibit with Responsive Text</title>
+  <title>Responsive 360° Exhibit with Centered Text</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Load Open Sans from Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
   <!-- Include Panellum CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
   <style>
-    /* --- Global Resets & Body Styles --- */
+    /* Global resets and font */
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Open Sans', sans-serif;
       background: #000;
-      overflow-y: hidden; /* Disable vertical scrolling */
+      overflow-y: hidden; /* no vertical scroll */
     }
-    /* Horizontal scroll enabled by setting a wider body */
+    
+    /* Enable horizontal scrolling to drive rotation */
     body {
-      width: 200vw;  /* Extra horizontal space for scroll-controlled rotation */
+      /* In landscape, provide more horizontal scroll space; in portrait, slightly less */
+      width: 200vw;
       height: 100vh;
       overflow-x: scroll;
     }
-    /* --- Panorama Container --- */
+    @media (orientation: portrait) {
+      body {
+        width: 150vw;
+      }
+    }
+    
+    /* Panorama container: always full viewport but constrained to device dimensions */
     #panorama {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
     }
-    /* --- Default Text Overlay (Landscape Layout) --- */
-    /* In landscape orientation (or as default on larger screens) the text overlay is on the right */
+    
+    /* Centered text container – no background box, just text with drop shadows */
     #textOverlay {
       position: fixed;
+      left: 50%;
       top: 50%;
-      right: 5%;
-      transform: translateY(-50%);
-      width: 40%;
+      transform: translate(-50%, -50%);
+      pointer-events: none; /* so that scrolling/touches affect the panorama */
     }
-    /* The heading (first element) is right-aligned */
-    #textOverlay h1 {
+    
+    /* The first text element (heading) is right-aligned */
+    #textOverlay .first {
+      text-align: right;
       font-size: 3em;
       font-weight: bold;
-      margin: 0 0 10px 0;
-      text-align: right;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-    /* All paragraphs are left-aligned */
-    #textOverlay p {
-      margin: 10px 0;
-      line-height: 1.5;
-      text-align: left;
+      margin-bottom: 1em;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
     
-    /* --- Portrait Orientation Adjustments --- */
-    @media (orientation: portrait) {
-      /* In portrait mode, position the text overlay at the bottom and center it */
-      #textOverlay {
-        top: auto;
-        bottom: 10%;
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        width: 90%;
-      }
-      /* Optionally, adjust font sizes for portrait */
-      #textOverlay h1 {
+    /* All subsequent paragraphs are left-aligned */
+    #textOverlay p {
+      text-align: left;
+      font-size: 14px;
+      margin: 0.5em 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    
+    /* Responsive text sizing for small screens */
+    @media (max-width: 600px) {
+      #textOverlay .first {
         font-size: 2.5em;
       }
       #textOverlay p {
         font-size: 12px;
-      }
-    }
-    
-    /* --- Further Adjustments for Very Small Screens --- */
-    @media (max-width: 400px) {
-      #textOverlay h1 {
-        font-size: 2em;
-      }
-      #textOverlay p {
-        font-size: 10px;
       }
     }
   </style>
@@ -91,49 +83,42 @@
   <!-- 360° Panorama Container -->
   <div id="panorama"></div>
   
-  <!-- Text Overlay -->
+  <!-- Centered Text Container -->
   <div id="textOverlay">
-    <!-- First text element (heading) is right-aligned -->
-    <h1>Mutanza</h1>
-    <!-- Subsequent paragraphs are left-aligned -->
-    <p class="subheading">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
-    </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    </p>
-    <p>
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
-    <p>
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-    </p>
-    <p>
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+    <div class="first">Mutanza</div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
   
   <!-- Include Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize Panellum with your 360° image
+    // Initialize the Panellum viewer with your 360° image.
     var viewer = pannellum.viewer('panorama', {
       "type": "equirectangular",
-      "panorama": "/assets/test1.jpg", // Your 360 image path
+      "panorama": "/assets/test1.jpg",  // Your 360 image path
       "autoLoad": true,
       "autoRotate": 0,
       "yaw": 0,
       "pitch": 0,
-      "hfov": 110
+      "hfov": 110,
+      "multiRes": false  // Use single resolution to avoid potential mobile issues
     });
     
-    // Map horizontal scroll (window.scrollX) to a full 360° rotation.
+    // Map horizontal scroll position to a full 360° rotation.
     window.addEventListener("scroll", function() {
       var scrollPos = window.scrollX;
       var maxScroll = document.body.scrollWidth - window.innerWidth;
       var newYaw = (scrollPos / maxScroll) * 360;
       viewer.setYaw(newYaw);
     });
+    
+    // Note: If you see an error like "panorama is too big for your device,"
+    // it typically means the image resolution exceeds what your device can handle.
+    // Consider using a lower resolution image or a multi-resolution (tiled) panorama.
   </script>
 </body>
 </html>
