@@ -1,49 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>360° Panorama Exhibit</title>
+  <meta charset="UTF-8" />
+  <title>360° Exhibit with Text Overlay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Load Open Sans from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
   <!-- Include Panellum CSS -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
   <style>
-    /* Reset margins/padding and extend page height for scrolling */
+    /* Global resets and Open Sans font */
     html, body {
       margin: 0;
       padding: 0;
-      height: 200vh; /* Adjust if needed */
+      height: 200vh; /* Extend page height for scrolling */
       overflow-x: hidden;
+      font-family: 'Open Sans', sans-serif;
+      background: #000; /* black background to better contrast the overlay */
     }
     /* Container for the 360° panorama */
     #panorama {
       width: 100%;
       height: 100vh;
     }
+    /* Fixed text overlay styling */
+    #textOverlay {
+      position: fixed;
+      top: 10%;
+      left: 5%;
+      z-index: 100;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 8px;
+    }
+    /* Heading "Mutanza" - bold and large */
+    #textOverlay h1 {
+      font-size: 3em;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+    /* Subheading in 14px */
+    #textOverlay .subheading {
+      font-size: 14px;
+      margin: 0 0 15px 0;
+    }
+    /* Paragraph styling */
+    #textOverlay p {
+      margin: 10px 0;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
-  <!-- Container for the panorama -->
+  <!-- 360° Panorama container -->
   <div id="panorama"></div>
+
+  <!-- Fixed text overlay with your content -->
+  <div id="textOverlay">
+    <h1>Mutanza</h1>
+    <p class="subheading">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </p>
+    <p>
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+    <p>
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    </p>
+    <p>
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+  </div>
+
   <!-- Include Panellum JS -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
     // Initialize the panorama viewer using Panellum.
     var viewer = pannellum.viewer('panorama', {
-        "type": "equirectangular",
-        "panorama": "/assets/test1.jpg", // Replace with your 360 image URL
-        "autoLoad": true,
-        "autoRotate": 0,
-        "yaw": 0,
-        "pitch": 0,
-        "hfov": 110
+      "type": "equirectangular",
+      "panorama": "YOUR_360_IMAGE_SOURCE.jpg", // Replace with your 360 image URL
+      "autoLoad": true,
+      "autoRotate": 0,  // Disable auto-rotation
+      "yaw": 0,         // Initial horizontal rotation angle
+      "pitch": 0,       // Initial vertical rotation angle
+      "hfov": 110       // Horizontal field of view; adjust as needed
     });
 
-    // Listen for scroll events and update the panorama's yaw.
+    // Update the panorama's yaw based on scroll position.
     window.addEventListener("scroll", function() {
-        var scrollPos = window.scrollY;
-        // For example, 1000 pixels of scroll equals a full 360° rotation.
-        var newYaw = (scrollPos / 1000) * 360;
-        viewer.setYaw(newYaw);
+      var scrollPos = window.scrollY;
+      // Mapping: 1000px scroll ≈ 360° rotation. Adjust multiplier as needed.
+      var newYaw = (scrollPos / 1000) * 360;
+      viewer.setYaw(newYaw);
     });
   </script>
 </body>
