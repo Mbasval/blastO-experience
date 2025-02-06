@@ -13,35 +13,23 @@
 
   <style>
     /* ----------------------------------------------------------
-       GLOBAL + BODY
+       GLOBAL / BODY
+       - No horizontal scrolling. Let Pannellum handle the rotation.
        ---------------------------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      /* Enable horizontal scroll on larger screens to rotate panorama */
-      width: 200vw;
-      height: 100vh;
-      overflow-x: scroll;
-      overflow-y: hidden;
+      overflow: hidden; /* Hide both scrolls by default */
     }
-    /* On portrait tablets/phones, reduce the horizontal width a bit */
-    @media (orientation: portrait) {
-      body {
-        width: 150vw;
-      }
-    }
-    /* On very small screens, disable horizontal scrolling so the panorama is static horizontally */
-    @media (max-width: 600px) {
-      body {
-        width: 100vw;
-        overflow-x: hidden;
-      }
-    }
-
+    /* But if you want the text to scroll vertically if it overflows, you can do: 
+       body { overflow-y: auto; }
+       #textOverlay { pointer-events: auto; } 
+       Up to you. We'll keep it hidden for a static layout. */
+    
     /* ----------------------------------------------------------
-       PANORAMA
+       PANORAMA (Fullscreen, fixed behind everything)
        ---------------------------------------------------------- */
     #panorama {
       position: fixed;
@@ -49,12 +37,10 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      max-width: 100vw;
-      max-height: 100vh;
     }
 
     /* ----------------------------------------------------------
-       CUSTOM 360 CONTROLS (Thick white, no background)
+       CUSTOM CONTROLS (No background, thick white icons)
        ---------------------------------------------------------- */
     #customControls {
       position: fixed;
@@ -70,8 +56,9 @@
       border: none;
       color: #fff;
       font-size: 24px;
-      font-weight: 700; /* bold => thick line */
+      font-weight: 700; /* bold => thick lines */
       cursor: pointer;
+      outline: none;
     }
     .ctrlBtn:hover {
       opacity: 0.7;
@@ -109,36 +96,28 @@
     }
 
     /* ----------------------------------------------------------
-       MAIN TEXT OVERLAY (CENTERED, NO BORDER)
+       MAIN TEXT OVERLAY (Desktop: near top-left, no border)
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 100px; 
+      left: 80px;
+      max-width: 400px;
       color: #fff;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       z-index: 999;
-      max-width: 420px; /* Adjust as needed */
-      width: 90%;       /* So it’s responsive */
-      padding: 10px;
-      box-sizing: border-box;
-      overflow-y: auto;  /* Scroll if text is taller than screen */
-      max-height: 90vh;  /* Keep some breathing room */
+      pointer-events: none; /* So user can still drag the panorama behind the text */
     }
-    /* Title: Large & Bold */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
-      margin: 0 0 0.2em 0;
+      margin: 0 0 0.3em 0;
     }
-    /* Subtitle */
     #textOverlay .subtitle {
       font-size: 14px;
-      font-weight: 400;
       margin-bottom: 1em;
     }
-    /* Intro: 12px, light, italic */
+    /* Intro: 12px, italic, light */
     #textOverlay .intro {
       font-size: 12px;
       font-style: italic;
@@ -154,8 +133,29 @@
       margin: 0.6em 0;
     }
 
+    /* MOBILE: switch to normal flow so user can read easily. */
+    @media (max-width: 600px) {
+      #textOverlay {
+        position: static; 
+        margin: 80px 20px 20px 20px;
+        pointer-events: auto; /* So user can scroll the text if body has overflow-y: auto */
+      }
+      #textOverlay .title {
+        font-size: 1.6em;
+      }
+      #textOverlay .subtitle {
+        font-size: 13px;
+      }
+      #textOverlay .intro {
+        font-size: 11px;
+      }
+      #textOverlay .body {
+        font-size: 11px;
+      }
+    }
+
     /* ----------------------------------------------------------
-       CORNERS (DESKTOP-ONLY)
+       CORNERS (Only show on Desktop)
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
@@ -182,7 +182,6 @@
       margin-bottom: 5px;
       display: block;
     }
-    /* Hide corners on mobile */
     @media (max-width: 600px) {
       #bottomLeftCorner, #bottomRightCorner {
         display: none;
@@ -190,50 +189,52 @@
     }
 
     /* ----------------------------------------------------------
-       MOBILE TWO-COLUMN FOOTER (INSIDE THE TEXT OVERLAY)
+       MOBILE FOOTER (2 columns), shown inside #textOverlay
        ---------------------------------------------------------- */
     #mobileFooter {
-      display: none; /* hidden by default (desktop) */
+      display: none; /* hidden on desktop */
       margin-top: 20px;
     }
     .mobileColumn {
       font-size: 12px;
       line-height: 1.4;
-      margin-right: 20px; 
+      margin-right: 20px;
     }
     .mobileColumn:last-child {
       margin-right: 0;
     }
     .cornerTitleMobile {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 5px;
       display: block;
     }
     @media (max-width: 600px) {
       #mobileFooter {
-        display: flex;   /* show on mobile */
+        display: flex; /* show on mobile */
         flex-direction: row;
         justify-content: space-between;
       }
     }
+
   </style>
 </head>
 <body>
-  <!-- Panorama -->
+
+  <!-- 360° Panorama -->
   <div id="panorama"></div>
 
-  <!-- Custom Controls -->
+  <!-- Custom 360 Controls -->
   <div id="customControls">
     <button class="ctrlBtn" id="zoomIn">+</button>
     <button class="ctrlBtn" id="zoomOut">–</button>
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top Right Corner Email -->
+  <!-- Top-right Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- Main Text Overlay (Always Centered) -->
+  <!-- Main Text Overlay (Desktop: near top-left, Mobile: stacked) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
@@ -284,7 +285,7 @@
       <strong>Raúl Márquez, 2025</strong>
     </p>
 
-    <!-- 2-COLUMN FOOTER FOR MOBILE ONLY -->
+    <!-- MOBILE FOOTER (2 columns) -->
     <div id="mobileFooter">
       <div class="mobileColumn">
         <span class="cornerTitleMobile">Centro Cultural Plaza Fátima</span>
@@ -302,7 +303,7 @@
     </div>
   </div>
 
-  <!-- Corners (Desktop Only) -->
+  <!-- DESKTOP CORNERS -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     Río Éufrates y Av. Vasconcelos,<br>
@@ -310,7 +311,7 @@
     66220 San Pedro Garza García<br>
     N.L. México
   </div>
-  <div id="bottomRightCorner" class="cornerBox" style="text-align: right;">
+  <div id="bottomRightCorner" class="cornerBox">
     <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
     Lunes a Viernes 10:00 AM — 8:00 PM<br>
     Sábado 10:00 AM — 7:00 PM<br>
@@ -320,10 +321,10 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize viewer, hide default controls
+    // Initialize the panorama (no default controls; user can drag to rotate)
     var viewer = pannellum.viewer('panorama', {
       type: 'equirectangular',
-      panorama: '/assets/test3.jpg', // Replace with your 360 image path
+      panorama: '/assets/test3.jpg', // Replace with your actual 360 path
       autoLoad: true,
       showControls: false,
       yaw: 0,
@@ -331,24 +332,14 @@
       hfov: 110
     });
 
-    // Scroll -> rotate
-    window.addEventListener('scroll', function() {
-      var scrollPos = window.scrollX;
-      var maxScroll = document.body.scrollWidth - window.innerWidth;
-      if (maxScroll > 0) {
-        var newYaw = (scrollPos / maxScroll) * 360;
-        viewer.setYaw(newYaw);
-      }
-    });
-
-    // Custom Buttons
+    // Custom control buttons
     document.getElementById('zoomIn').addEventListener('click', function(){
-      var currHFOV = viewer.getHfov();
-      viewer.setHfov(currHFOV - 5);
+      var curr = viewer.getHfov();
+      viewer.setHfov(curr - 5);
     });
     document.getElementById('zoomOut').addEventListener('click', function(){
-      var currHFOV = viewer.getHfov();
-      viewer.setHfov(currHFOV + 5);
+      var curr = viewer.getHfov();
+      viewer.setHfov(curr + 5);
     });
     document.getElementById('toggleFullscreen').addEventListener('click', function(){
       viewer.toggleFullscreen();
