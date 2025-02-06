@@ -2,28 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Responsive 360° Exhibit with Centered Text</title>
+  <title>Responsive 360° Exhibit with Responsive Text</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Load Open Sans from Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
   <!-- Include Panellum CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
   <style>
-    /* Reset margins, set font and background */
+    /* --- Global Resets & Body Styles --- */
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Open Sans', sans-serif;
       background: #000;
-      overflow-y: hidden; /* Disable vertical scroll */
+      overflow-y: hidden; /* Disable vertical scrolling */
     }
-    /* For desktop: allow horizontal scroll over 200% of viewport width */
+    /* Horizontal scroll enabled by setting a wider body */
     body {
-      width: 200vw;
+      width: 200vw;  /* Extra horizontal space for scroll-controlled rotation */
       height: 100vh;
       overflow-x: scroll;
     }
-    /* Panorama container stays fixed and covers full viewport */
+    /* --- Panorama Container --- */
     #panorama {
       position: fixed;
       top: 0;
@@ -31,49 +31,58 @@
       width: 100vw;
       height: 100vh;
     }
-    /* Centered text overlay with drop shadow */
+    /* --- Default Text Overlay (Landscape Layout) --- */
+    /* In landscape orientation (or as default on larger screens) the text overlay is on the right */
     #textOverlay {
       position: fixed;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: #fff;
-      z-index: 100;
+      right: 5%;
+      transform: translateY(-50%);
+      width: 40%;
     }
-    /* Heading styling */
+    /* The heading (first element) is right-aligned */
     #textOverlay h1 {
       font-size: 3em;
       font-weight: bold;
       margin: 0 0 10px 0;
+      text-align: right;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
-    /* Subheading styling (14px) */
-    #textOverlay .subheading {
-      font-size: 14px;
-      margin: 0 0 15px 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-    /* Paragraph styling */
+    /* All paragraphs are left-aligned */
     #textOverlay p {
       margin: 10px 0;
       line-height: 1.5;
+      text-align: left;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
-    /* Responsive adjustments for smaller screens */
-    @media (max-width: 600px) {
-      body {
-        width: 150vw; /* Reduce horizontal scroll area on mobile */
+    
+    /* --- Portrait Orientation Adjustments --- */
+    @media (orientation: portrait) {
+      /* In portrait mode, position the text overlay at the bottom and center it */
+      #textOverlay {
+        top: auto;
+        bottom: 10%;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 90%;
       }
-      #panorama {
-        height: 100vh; /* Keep full viewport height */
-      }
+      /* Optionally, adjust font sizes for portrait */
       #textOverlay h1 {
         font-size: 2.5em;
       }
-      #textOverlay .subheading,
       #textOverlay p {
         font-size: 12px;
+      }
+    }
+    
+    /* --- Further Adjustments for Very Small Screens --- */
+    @media (max-width: 400px) {
+      #textOverlay h1 {
+        font-size: 2em;
+      }
+      #textOverlay p {
+        font-size: 10px;
       }
     }
   </style>
@@ -82,9 +91,11 @@
   <!-- 360° Panorama Container -->
   <div id="panorama"></div>
   
-  <!-- Centered Text Overlay -->
+  <!-- Text Overlay -->
   <div id="textOverlay">
+    <!-- First text element (heading) is right-aligned -->
     <h1>Mutanza</h1>
+    <!-- Subsequent paragraphs are left-aligned -->
     <p class="subheading">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
     </p>
@@ -105,10 +116,10 @@
   <!-- Include Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the 360° panorama viewer using Panellum
+    // Initialize Panellum with your 360° image
     var viewer = pannellum.viewer('panorama', {
       "type": "equirectangular",
-      "panorama": "/assets/test1.jpg",
+      "panorama": "/assets/test1.jpg", // Your 360 image path
       "autoLoad": true,
       "autoRotate": 0,
       "yaw": 0,
@@ -116,7 +127,7 @@
       "hfov": 110
     });
     
-    // Update the panorama's yaw based on horizontal scroll position
+    // Map horizontal scroll (window.scrollX) to a full 360° rotation.
     window.addEventListener("scroll", function() {
       var scrollPos = window.scrollX;
       var maxScroll = document.body.scrollWidth - window.innerWidth;
