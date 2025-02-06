@@ -9,29 +9,27 @@
   <!-- Include Panellum CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
   <style>
-    /* Global resets and font */
+    /* Global resets, font and background */
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Open Sans', sans-serif;
       background: #000;
-      overflow-y: hidden; /* no vertical scroll */
+      overflow-y: hidden; /* Disable vertical scroll */
     }
-    
-    /* Enable horizontal scrolling to drive rotation */
+    /* Enable horizontal scrolling for rotation */
     body {
-      /* In landscape, provide more horizontal scroll space; in portrait, slightly less */
-      width: 200vw;
+      width: 200vw;  /* Extra horizontal space */
       height: 100vh;
       overflow-x: scroll;
     }
     @media (orientation: portrait) {
       body {
-        width: 150vw;
+        width: 150vw; /* Slightly less horizontal scroll for portrait */
       }
     }
     
-    /* Panorama container: always full viewport but constrained to device dimensions */
+    /* Panorama container: fills the viewport but constrained to device dimensions */
     #panorama {
       position: fixed;
       top: 0;
@@ -42,27 +40,34 @@
       max-height: 100vh;
     }
     
-    /* Centered text container – no background box, just text with drop shadows */
+    /* Centered text container (fixed in the center) */
     #textOverlay {
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      pointer-events: none; /* so that scrolling/touches affect the panorama */
+      pointer-events: none; /* Allow interactions with the panorama */
+      text-align: left;
+      color: #fff;
     }
     
-    /* The first text element (heading) is right-aligned */
-    #textOverlay .first {
-      text-align: right;
+    /* Title: "Mutanza" (left-aligned) */
+    #textOverlay .title {
       font-size: 3em;
       font-weight: bold;
       margin-bottom: 1em;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
     
-    /* All subsequent paragraphs are left-aligned */
-    #textOverlay p {
-      text-align: left;
+    /* First lorem ipsum paragraph: 12px */
+    #textOverlay .intro {
+      font-size: 12px;
+      margin: 0.5em 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    
+    /* Next four lorem ipsum paragraphs: 14px */
+    #textOverlay .body {
       font-size: 14px;
       margin: 0.5em 0;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
@@ -70,11 +75,14 @@
     
     /* Responsive text sizing for small screens */
     @media (max-width: 600px) {
-      #textOverlay .first {
+      #textOverlay .title {
         font-size: 2.5em;
       }
-      #textOverlay p {
-        font-size: 12px;
+      #textOverlay .intro {
+        font-size: 11px;
+      }
+      #textOverlay .body {
+        font-size: 13px;
       }
     }
   </style>
@@ -83,20 +91,30 @@
   <!-- 360° Panorama Container -->
   <div id="panorama"></div>
   
-  <!-- Centered Text Container -->
+  <!-- Centered Text Overlay -->
   <div id="textOverlay">
-    <div class="first">Mutanza</div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <div class="title">Mutanza</div>
+    <p class="intro">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+    </p>
+    <p class="body">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    </p>
+    <p class="body">
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+    <p class="body">
+      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    </p>
+    <p class="body">
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
   </div>
   
   <!-- Include Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the Panellum viewer with your 360° image.
+    // Initialize Panellum viewer with your 360° image
     var viewer = pannellum.viewer('panorama', {
       "type": "equirectangular",
       "panorama": "/assets/test1.jpg",  // Your 360 image path
@@ -105,20 +123,16 @@
       "yaw": 0,
       "pitch": 0,
       "hfov": 110,
-      "multiRes": false  // Use single resolution to avoid potential mobile issues
+      "multiRes": false  // Use single resolution to mitigate "too big" errors on some devices
     });
     
-    // Map horizontal scroll position to a full 360° rotation.
+    // Map horizontal scroll to panorama rotation (0 to 360°)
     window.addEventListener("scroll", function() {
       var scrollPos = window.scrollX;
       var maxScroll = document.body.scrollWidth - window.innerWidth;
       var newYaw = (scrollPos / maxScroll) * 360;
       viewer.setYaw(newYaw);
     });
-    
-    // Note: If you see an error like "panorama is too big for your device,"
-    // it typically means the image resolution exceeds what your device can handle.
-    // Consider using a lower resolution image or a multi-resolution (tiled) panorama.
   </script>
 </body>
 </html>
