@@ -5,7 +5,7 @@
   <title>Mutanza 360° Exhibit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Load Arimo from Google Fonts (light 300, normal 400, bold 700) -->
+  <!-- Load Arimo from Google Fonts (weights 300,400,700) -->
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@300;400;700&display=swap" rel="stylesheet">
 
   <!-- Include Panellum CSS -->
@@ -14,15 +14,14 @@
   <style>
     /* ----------------------------------------------------------
        GLOBAL + BODY SCROLL
-    ---------------------------------------------------------- */
+       ---------------------------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      /* Horizontal scroll for desktop to rotate panorama */
-      overflow-y: hidden;
-      width: 200vw;
+      overflow-y: hidden; /* No vertical scroll */
+      width: 200vw;       /* Horizontal scroll to rotate panorama */
       height: 100vh;
       overflow-x: scroll;
     }
@@ -31,8 +30,8 @@
         width: 150vw; /* Slightly less horizontal scroll in portrait */
       }
     }
+    /* On small phones, disable horizontal scroll so it behaves more like a normal single-column layout */
     @media (max-width: 600px) {
-      /* On small phones, no horizontal scrolling. */
       body {
         width: 100vw;
         overflow-x: hidden;
@@ -41,7 +40,7 @@
 
     /* ----------------------------------------------------------
        PANORAMA
-    ---------------------------------------------------------- */
+       ---------------------------------------------------------- */
     #panorama {
       position: fixed;
       top: 0;
@@ -54,8 +53,8 @@
 
     /* ----------------------------------------------------------
        CUSTOM 360 CONTROLS
-       (No background, white, thick, vertical alignment)
-    ---------------------------------------------------------- */
+       (Thick white icons, no background)
+       ---------------------------------------------------------- */
     #customControls {
       position: fixed;
       top: 20px;
@@ -70,8 +69,8 @@
       background: none;
       border: none;
       color: #fff;
-      font-size: 24px;       /* Thicker/larger text for the icons */
-      font-weight: 700;      /* Bold = thick white icons */
+      font-size: 24px;  /* Thick icon size */
+      font-weight: 700; /* Bold => thick lines */
       line-height: 24px;
       cursor: pointer;
       outline: none;
@@ -80,7 +79,7 @@
       opacity: 0.7;
     }
     @media (max-width: 600px) {
-      /* Slightly shrink controls on mobile */
+      /* Slightly smaller on mobile */
       #customControls {
         top: 10px;
         left: 10px;
@@ -93,8 +92,8 @@
     }
 
     /* ----------------------------------------------------------
-       TOP-RIGHT CORNER (info@blast-o.com)
-    ---------------------------------------------------------- */
+       TOP-RIGHT CORNER (EMAIL)
+       ---------------------------------------------------------- */
     #topRightCorner {
       position: fixed;
       top: 20px;
@@ -114,41 +113,39 @@
     }
 
     /* ----------------------------------------------------------
-       CENTER TEXT OVERLAY (with border/padding)
-    ---------------------------------------------------------- */
+       MAIN TEXT OVERLAY (NO BORDER)
+       ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
-      /* Near left-center: shift 40% so it's left-aligned a bit in desktop view */
-      left: 40%;
-      top: 50%;
-      transform: translate(-40%, -50%);
-      pointer-events: none;
+      top: 100px;   /* Adjust to match desired “pixel perfect” offset */
+      left: 80px;   /* Adjust to move closer/farther from edges */
+      pointer-events: none; /* Let clicks go to panorama */
       color: #fff;
       max-width: 400px;
-      padding: 20px;
       z-index: 999;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      border: 1px solid #fff;
     }
+    /* Title: Large & Bold */
     #textOverlay .title {
       font-size: 2em;
-      font-weight: 700; /* Bold */
-      margin-bottom: 0.2em;
+      font-weight: 700;
+      margin: 0 0 0.3em 0;
     }
+    /* Subtitle (Contemplación...) */
     #textOverlay .subtitle {
       font-size: 14px;
       font-weight: 400;
       margin-bottom: 1em;
     }
-    /* Intro: 12px, light + italic */
+    /* Intro: 12px, light, italic */
     #textOverlay .intro {
       font-size: 12px;
-      font-weight: 300;
       font-style: italic;
+      font-weight: 300;
       line-height: 1.4;
       margin: 0.6em 0;
     }
-    /* Body: 12px, normal weight */
+    /* Body: 12px normal */
     #textOverlay .body {
       font-size: 12px;
       font-weight: 400;
@@ -156,37 +153,16 @@
       margin: 0.6em 0;
     }
 
-    @media (max-width: 600px) {
-      #textOverlay {
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 90%;
-        padding: 15px;
-      }
-      #textOverlay .title {
-        font-size: 1.6em;
-      }
-      #textOverlay .subtitle {
-        font-size: 13px;
-      }
-      #textOverlay .intro {
-        font-size: 11px;
-      }
-      #textOverlay .body {
-        font-size: 11px;
-      }
-    }
-
     /* ----------------------------------------------------------
-       DESKTOP CORNERS (Hidden on mobile)
-    ---------------------------------------------------------- */
+       BOTTOM CORNERS (DESKTOP ONLY)
+       ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
       color: #fff;
+      font-size: 14px;
       line-height: 1.4;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       z-index: 9999;
-      font-size: 14px;
     }
     #bottomLeftCorner {
       bottom: 20px;
@@ -201,59 +177,67 @@
       width: 220px;
     }
     .cornerTitle {
-      font-weight: 700;
       font-size: 16px;
+      font-weight: 700;
       margin-bottom: 5px;
       display: block;
-    }
-    @media (max-width: 600px) {
-      /* Hide corners on mobile. We'll show them in a 2-column layout below main text. */
-      #bottomLeftCorner, #bottomRightCorner {
-        display: none;
-      }
     }
 
     /* ----------------------------------------------------------
-       MOBILE 2-COLUMN FOOTER (shown below main text)
-    ---------------------------------------------------------- */
-    #mobileFooter {
-      display: none; /* Hidden on desktop */
-      position: static; /* Normal flow under the main text */
-      color: #fff;
-      z-index: 999; /* Just needs to be above the panorama */
-      margin: 0 auto;
-      width: 90%;
-      max-width: 500px;
-      padding-top: 10px;
-      border-top: 1px solid #fff;
-      /* We can add text-shadow if you like, to match the style */
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-    .mobileColumn {
-      flex: 1;
-      font-size: 12px;
-      line-height: 1.4;
-      padding-right: 20px; /* space between columns */
-    }
-    .mobileColumn:last-child {
-      padding-right: 0;
-    }
-    .cornerTitleMobile {
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 5px;
-      display: block;
-    }
-
+       MOBILE STYLES (HIDE CORNERS, SHOW 2-COLUMN FOOTER)
+       ---------------------------------------------------------- */
     @media (max-width: 600px) {
+      /* Hide desktop corners */
+      #bottomLeftCorner, #bottomRightCorner {
+        display: none;
+      }
+      /* Move overlay near top-left with some margin */
+      #textOverlay {
+        position: static;
+        margin: 80px 20px 20px 20px;
+        max-width: 100%;
+      }
+      /* Slightly smaller text on mobile */
+      #textOverlay .title {
+        font-size: 1.6em;
+      }
+      #textOverlay .subtitle {
+        font-size: 13px;
+      }
+      #textOverlay .intro {
+        font-size: 11px;
+      }
+      #textOverlay .body {
+        font-size: 11px;
+      }
+
+      /* Display the mobile footer after the main text, two columns side-by-side */
       #mobileFooter {
-        display: flex; /* Shown only on mobile */
-        flex-direction: row;
-        justify-content: space-between;
-        margin-top: -40px; /* pull it up a bit if you like */
-        transform: translateY(100vh); /* If you want it after the text overlay, depends on your preference. */
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .mobileColumn {
+        flex: 1;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+      .cornerTitleMobile {
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: 5px;
+        display: block;
       }
     }
+
+    /* Initially hidden on desktop */
+    #mobileFooter {
+      display: none;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      z-index: 999;
+    }
+
   </style>
 </head>
 <body>
@@ -268,10 +252,10 @@
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top Right Corner: Info Email (desktop + mobile) -->
+  <!-- Top Right Corner: Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- Centered Text Overlay (with border + padding) -->
+  <!-- Main Text Overlay (no border) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
@@ -322,7 +306,7 @@
       <strong>Raúl Márquez, 2025</strong>
     </p>
 
-    <!-- MOBILE-ONLY 2-COLUMN FOOTER -->
+    <!-- Mobile-Only 2-Column Footer -->
     <div id="mobileFooter">
       <div class="mobileColumn">
         <span class="cornerTitleMobile">Centro Cultural Plaza Fátima</span>
@@ -340,7 +324,7 @@
     </div>
   </div>
 
-  <!-- DESKTOP CORNER: BOTTOM LEFT -->
+  <!-- Desktop-Only Corners -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     Río Éufrates y Av. Vasconcelos,<br>
@@ -348,8 +332,6 @@
     66220 San Pedro Garza García<br>
     N.L. México
   </div>
-
-  <!-- DESKTOP CORNER: BOTTOM RIGHT -->
   <div id="bottomRightCorner" class="cornerBox">
     <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
     Lunes a Viernes 10:00 AM — 8:00 PM<br>
@@ -357,13 +339,13 @@
     Acceso Libre
   </div>
 
-  <!-- PANELLUM (JS) -->
+  <!-- Pannellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize Panellum viewer, hide default controls
+    // Initialize the panorama (hide default controls)
     var viewer = pannellum.viewer('panorama', {
-      type: "equirectangular",
-      panorama: "/assets/test3.jpg", // <-- Replace with your 360 image path
+      type: 'equirectangular',
+      panorama: '/assets/test3.jpg', // <-- Replace with your 360 image path
       autoLoad: true,
       showControls: false,
       yaw: 0,
@@ -371,8 +353,8 @@
       hfov: 110
     });
 
-    // Map horizontal scroll to panorama rotation (0 - 360°)
-    window.addEventListener("scroll", function() {
+    // Map horizontal scroll to panorama rotation (0-360°)
+    window.addEventListener('scroll', function() {
       var scrollPos = window.scrollX;
       var maxScroll = document.body.scrollWidth - window.innerWidth;
       if (maxScroll > 0) {
@@ -381,19 +363,16 @@
       }
     });
 
-    // CUSTOM CONTROLS
+    // Custom control handlers
     document.getElementById('zoomIn').addEventListener('click', function(){
-      // Zoom in by decreasing HFOV
       var currHFOV = viewer.getHfov();
       viewer.setHfov(currHFOV - 5);
     });
     document.getElementById('zoomOut').addEventListener('click', function(){
-      // Zoom out by increasing HFOV
       var currHFOV = viewer.getHfov();
       viewer.setHfov(currHFOV + 5);
     });
     document.getElementById('toggleFullscreen').addEventListener('click', function(){
-      // Toggle Fullscreen
       viewer.toggleFullscreen();
     });
   </script>
