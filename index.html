@@ -20,22 +20,21 @@
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      /* We'll allow horizontal scroll on desktop for the panorama rotation */
+      /* Horizontal scroll for desktop to rotate panorama */
       overflow-y: hidden;
-      width: 200vw; /* Extra horizontal space */
+      width: 200vw;
       height: 100vh;
       overflow-x: scroll;
     }
-    /* On small screens/portrait, reduce the horizontal width. */
     @media (orientation: portrait) {
       body {
-        width: 150vw;
+        width: 150vw; /* Slightly less horizontal scroll in portrait */
       }
     }
-    /* A further tweak for very small screens if needed */
     @media (max-width: 600px) {
+      /* On small phones, no horizontal scrolling. */
       body {
-        width: 100vw; /* Prevent overscrolling horizontally on tiny phones */
+        width: 100vw;
         overflow-x: hidden;
       }
     }
@@ -55,43 +54,41 @@
 
     /* ----------------------------------------------------------
        CUSTOM 360 CONTROLS
-       (We'll hide default Pannellum controls and build our own)
+       (No background, white, thick, vertical alignment)
     ---------------------------------------------------------- */
     #customControls {
       position: fixed;
       top: 20px;
       left: 20px;
       display: flex;
-      flex-direction: column; /* Stack vertically: +, -, [ ] */
-      align-items: flex-start;
-      gap: 12px; /* Space between buttons */
-      z-index: 9999; /* Above the panorama */
-      pointer-events: auto; /* Make them clickable */
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9999;
+      pointer-events: auto;
     }
     .ctrlBtn {
+      background: none;
+      border: none;
       color: #fff;
-      font-size: 20px;
-      font-weight: 400;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 6px 10px;
+      font-size: 24px;       /* Thicker/larger text for the icons */
+      font-weight: 700;      /* Bold = thick white icons */
+      line-height: 24px;
       cursor: pointer;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      transition: background 0.2s;
+      outline: none;
     }
     .ctrlBtn:hover {
-      background: rgba(255,255,255,0.1);
+      opacity: 0.7;
     }
-    /* On small screens, shrink them a bit */
     @media (max-width: 600px) {
+      /* Slightly shrink controls on mobile */
       #customControls {
         top: 10px;
         left: 10px;
         gap: 8px;
       }
       .ctrlBtn {
-        font-size: 18px;
-        padding: 4px 8px;
+        font-size: 20px;
+        line-height: 20px;
       }
     }
 
@@ -117,25 +114,26 @@
     }
 
     /* ----------------------------------------------------------
-       CENTER TEXT OVERLAY
+       CENTER TEXT OVERLAY (with border/padding)
     ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
-      /* Shift left so it appears more to the left side, but still “centered” vertically */
+      /* Near left-center: shift 40% so it's left-aligned a bit in desktop view */
       left: 40%;
       top: 50%;
       transform: translate(-40%, -50%);
-      pointer-events: none; /* Clicks pass through to panorama */
+      pointer-events: none;
       color: #fff;
-      max-width: 450px; /* Make it a bit narrower if you want it to appear as in the photo */
+      max-width: 400px;
       padding: 20px;
       z-index: 999;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      border: 1px solid #fff;
     }
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700; /* Bold */
-      margin-bottom: 0.3em;
+      margin-bottom: 0.2em;
     }
     #textOverlay .subtitle {
       font-size: 14px;
@@ -147,8 +145,8 @@
       font-size: 12px;
       font-weight: 300;
       font-style: italic;
-      margin: 0.6em 0;
       line-height: 1.4;
+      margin: 0.6em 0;
     }
     /* Body: 12px, normal weight */
     #textOverlay .body {
@@ -157,16 +155,16 @@
       line-height: 1.4;
       margin: 0.6em 0;
     }
+
     @media (max-width: 600px) {
-      /* On very small screens, center it fully and reduce font sizes */
       #textOverlay {
         left: 50%;
         transform: translate(-50%, -50%);
-        max-width: 80%;
+        max-width: 90%;
         padding: 15px;
       }
       #textOverlay .title {
-        font-size: 1.5em;
+        font-size: 1.6em;
       }
       #textOverlay .subtitle {
         font-size: 13px;
@@ -180,7 +178,7 @@
     }
 
     /* ----------------------------------------------------------
-       BOTTOM CORNERS
+       DESKTOP CORNERS (Hidden on mobile)
     ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
@@ -203,27 +201,57 @@
       width: 220px;
     }
     .cornerTitle {
-      font-weight: 700; /* Bold for the location / expo title */
+      font-weight: 700;
       font-size: 16px;
       margin-bottom: 5px;
       display: block;
     }
     @media (max-width: 600px) {
-      .cornerBox {
-        font-size: 12px;
-      }
-      .cornerTitle {
-        font-size: 14px;
-      }
+      /* Hide corners on mobile. We'll show them in a 2-column layout below main text. */
       #bottomLeftCorner, #bottomRightCorner {
-        bottom: 10px;
-        width: 180px;
+        display: none;
       }
-      #bottomLeftCorner {
-        left: 10px;
-      }
-      #bottomRightCorner {
-        right: 10px;
+    }
+
+    /* ----------------------------------------------------------
+       MOBILE 2-COLUMN FOOTER (shown below main text)
+    ---------------------------------------------------------- */
+    #mobileFooter {
+      display: none; /* Hidden on desktop */
+      position: static; /* Normal flow under the main text */
+      color: #fff;
+      z-index: 999; /* Just needs to be above the panorama */
+      margin: 0 auto;
+      width: 90%;
+      max-width: 500px;
+      padding-top: 10px;
+      border-top: 1px solid #fff;
+      /* We can add text-shadow if you like, to match the style */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    .mobileColumn {
+      flex: 1;
+      font-size: 12px;
+      line-height: 1.4;
+      padding-right: 20px; /* space between columns */
+    }
+    .mobileColumn:last-child {
+      padding-right: 0;
+    }
+    .cornerTitleMobile {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      #mobileFooter {
+        display: flex; /* Shown only on mobile */
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: -40px; /* pull it up a bit if you like */
+        transform: translateY(100vh); /* If you want it after the text overlay, depends on your preference. */
       }
     }
   </style>
@@ -233,17 +261,17 @@
   <!-- 360° Panorama Container -->
   <div id="panorama"></div>
 
-  <!-- Custom 360 Controls -->
+  <!-- Custom 360 Controls (no background, thick white) -->
   <div id="customControls">
-    <div class="ctrlBtn" id="zoomIn">+</div>
-    <div class="ctrlBtn" id="zoomOut">-</div>
-    <div class="ctrlBtn" id="toggleFullscreen">[ ]</div>
+    <button class="ctrlBtn" id="zoomIn">+</button>
+    <button class="ctrlBtn" id="zoomOut">–</button>
+    <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top Right Corner: Info Email -->
+  <!-- Top Right Corner: Info Email (desktop + mobile) -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- Centered Text Overlay -->
+  <!-- Centered Text Overlay (with border + padding) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
@@ -293,9 +321,26 @@
     <p class="body" style="margin-top: 1em;">
       <strong>Raúl Márquez, 2025</strong>
     </p>
+
+    <!-- MOBILE-ONLY 2-COLUMN FOOTER -->
+    <div id="mobileFooter">
+      <div class="mobileColumn">
+        <span class="cornerTitleMobile">Centro Cultural Plaza Fátima</span>
+        Río Éufrates y Av. Vasconcelos,<br>
+        Del Valle Sector Fátima,<br>
+        66220 San Pedro Garza García<br>
+        N.L. México
+      </div>
+      <div class="mobileColumn">
+        <span class="cornerTitleMobile">Exposición<br>31.02 — 01.03 (2024)</span>
+        Lunes a Viernes 10:00 AM — 8:00 PM<br>
+        Sábado 10:00 AM — 7:00 PM<br>
+        Acceso Libre
+      </div>
+    </div>
   </div>
 
-  <!-- Bottom Left Corner (Location) -->
+  <!-- DESKTOP CORNER: BOTTOM LEFT -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     Río Éufrates y Av. Vasconcelos,<br>
@@ -304,7 +349,7 @@
     N.L. México
   </div>
 
-  <!-- Bottom Right Corner (Exhibition) -->
+  <!-- DESKTOP CORNER: BOTTOM RIGHT -->
   <div id="bottomRightCorner" class="cornerBox">
     <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
     Lunes a Viernes 10:00 AM — 8:00 PM<br>
@@ -315,16 +360,15 @@
   <!-- PANELLUM (JS) -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize Panellum viewer with custom controls hidden
+    // Initialize Panellum viewer, hide default controls
     var viewer = pannellum.viewer('panorama', {
-      "type": "equirectangular",
-      "panorama": "/assets/test1.jpg", // <-- Replace with your 360 image path
-      "autoLoad": true,
-      "showControls": false, // Hide the default controls
-      "yaw": 0,
-      "pitch": 0,
-      "hfov": 110,
-      "multiRes": false
+      type: "equirectangular",
+      panorama: "/assets/test3.jpg", // <-- Replace with your 360 image path
+      autoLoad: true,
+      showControls: false,
+      yaw: 0,
+      pitch: 0,
+      hfov: 110
     });
 
     // Map horizontal scroll to panorama rotation (0 - 360°)
@@ -337,7 +381,7 @@
       }
     });
 
-    // Custom Buttons
+    // CUSTOM CONTROLS
     document.getElementById('zoomIn').addEventListener('click', function(){
       // Zoom in by decreasing HFOV
       var currHFOV = viewer.getHfov();
