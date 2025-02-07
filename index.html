@@ -43,10 +43,10 @@
     #customControls {
       position: fixed;
       top: 20px;
-      left: 15px;  /* Slightly closer */
+      left: 15px; /* Slightly closer */
       display: flex;
       flex-direction: column;
-      gap: 6px;    /* A bit smaller gap */
+      gap: 4px;   /* A wee bit closer spacing */
       z-index: 9999;
     }
     .ctrlBtn {
@@ -72,29 +72,29 @@
     }
 
     /* ----------------------------------------------------------
-       TOP-RIGHT CORNER (EMAIL)
+       TOP-RIGHT CORNER (EMAIL) => 2em semibold
        ---------------------------------------------------------- */
     #topRightCorner {
       position: fixed;
       top: 20px;
       right: 20px;
       color: #fff;
-      font-size: 14px;
-      font-weight: 400;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       z-index: 9999;
+      font-size: 2em;
+      font-weight: 600; /* Same as corner titles */
     }
     @media (max-width: 600px) {
       #topRightCorner {
         top: 10px;
         right: 10px;
-        font-size: 12px;
+        font-size: 1.7em;
       }
     }
 
     /* ----------------------------------------------------------
        MAIN TEXT OVERLAY
-       Always centered, but narrower so user can drag the panorama around it.
+       Always centered, but narrower and more padding => more margin space
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
@@ -104,28 +104,34 @@
       z-index: 999;
       color: #fff;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-
-      /* Make it scrollable if content is tall */
       max-height: 90vh;
       overflow-y: auto;
       pointer-events: auto;
-
-      /* Desktop sizing */
-      width: 60%;
+      width: 50%;       /* narrower => more space around */
       max-width: 480px;
-      padding: 10px;
+      padding: 20px;    /* more padding => extra margin inside box */
       box-sizing: border-box;
     }
+
+    /* On phones => narrower again => 60%, same extra padding */
+    @media (max-width: 600px) {
+      #textOverlay {
+        width: 60%;
+        max-width: none;
+        padding: 20px;
+      }
+    }
+
     /* Title: 2em, bold (unchanged) */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
-    /* "Contemplación y tiempo…" => bold, size 14, left-aligned */
+    /* "Contemplación…" => bold, size 14, left-aligned */
     #textOverlay .subtitle {
       font-size: 14px;
-      font-weight: 700; /* bold */
+      font-weight: 700;
       margin-bottom: 1em;
       text-align: left;
     }
@@ -136,7 +142,7 @@
       font-weight: 400;   /* normal */
       line-height: 1.4;
       margin: 0.6em 0;
-      text-align: right;  /* right aligned */
+      text-align: right;
     }
     /* Body: 12px normal */
     .body {
@@ -150,55 +156,30 @@
       text-align: right;
     }
 
-    /* On phones, we shrink the width even further so there's guaranteed space for dragging. */
-    @media (max-width: 600px) {
-      #textOverlay {
-        width: 70%;
-        max-width: none;
-        padding: 10px;
-      }
-      #textOverlay .title {
-        font-size: 1.6em;
-      }
-      #textOverlay .subtitle {
-        font-size: 13px;
-      }
-      .intro {
-        font-size: 11px;
-      }
-      .body {
-        font-size: 11px;
-      }
-    }
-
     /* ----------------------------------------------------------
        CORNERS (ALWAYS VISIBLE, even on mobile)
+       - Corner Titles => 2em, semibold(600)
+       - Corner Body => 14px, weight 400
+       - Separate lines EXACTLY as requested
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
       color: #fff;
-      font-size: 14px;
-      line-height: 1.4;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       z-index: 9999;
-      width: 180px; /* slightly smaller so they’re not too wide on mobile */
+      width: 180px; 
       box-sizing: border-box;
     }
-    /* Corner titles => 2em semibold (approx. font-weight 600) */
     .cornerTitle {
       font-size: 2em;
       font-weight: 600;
       margin-bottom: 5px;
       display: block;
     }
-    /* Corner body => 14px semibold */
     .cornerBody {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400; /* corner text lines => weight 400 */
       line-height: 1.4;
-      /* Prevent undesired line breaks if you wish: white-space: nowrap; 
-         But be careful of overflow on smaller screens. 
-      */
     }
 
     #bottomLeftCorner {
@@ -224,16 +205,14 @@
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top-right Email -->
+  <!-- Top-right Email => 2em semibold -->
   <div id="topRightCorner">info@blast-o.com</div>
 
   <!-- MAIN TEXT OVERLAY (Centered, Scrollable, Narrow Enough to Drag) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
-    <!-- Now bold, size 14, left-aligned -->
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
 
-    <!-- Right-aligned, normal italic -->
     <p class="intro">
       "Hablar sola, como las piedras.<br>
       Olvidemos que es síntoma de locura y recordemos que el soliloquio puede ser,<br>
@@ -276,7 +255,6 @@
       Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia 
       de sus formas y su sutileza, y a elaborar en la templanza nuestro propio soliloquio.
     </p>
-    <!-- Right-aligned final credit -->
     <p class="body finalCredit">
       <strong>Raúl Márquez, 2025</strong>
     </p>
@@ -285,7 +263,6 @@
   <!-- CORNERS (ALWAYS VISIBLE) -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
-    <!-- 14px semibold lines -->
     <div class="cornerBody">
       Río Éufrates y Av. Vasconcelos,<br>
       Del Valle Sector Fátima,<br>
@@ -294,11 +271,11 @@
     </div>
   </div>
   <div id="bottomRightCorner" class="cornerBox">
-    <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
-    <!-- 14px semibold lines, keep "Lunes a Viernes 10:00 AM — 8:00 PM" on one line -->
+    <span class="cornerTitle">Exposición 31.02 — 01.03 (2024)</span>
     <div class="cornerBody">
       Lunes a Viernes 10:00 AM — 8:00 PM<br>
       Sábado 10:00 AM — 7:00 PM<br>
+      <br>
       Acceso Libre
     </div>
   </div>
