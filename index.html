@@ -334,21 +334,19 @@
   </div>
 
 
- <!-- Panellum JS -->
+<!-- Panellum JS -->
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
-  var isMobile = window.innerWidth <= 700; 
-
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: '/assets/test7.jpg', // Check that this path is correct
+    panorama: '/assets/test7.jpg', 
     autoLoad: true,
     showControls: false,
     yaw: 0,
     pitch: 0,
     hfov: 110,
-    autoRotate: isMobile ? 2 : 0, 
+    autoRotate: 2, //
     autoRotateInactivityDelay: 3000 
   });
 
@@ -380,25 +378,22 @@
   document.addEventListener("DOMContentLoaded", function () {
       var textOverlay = document.getElementById("textOverlay");
 
-      // Only run on mobile
-      if (window.innerWidth <= 700) {
-          function checkScroll() {
-              if (textOverlay.scrollHeight > textOverlay.clientHeight) {
-                  textOverlay.classList.remove("no-shadow"); // Show shadow if content is scrollable
-              } else {
-                  textOverlay.classList.add("no-shadow"); // Hide shadow if no scrolling needed
-              }
+      function checkScroll() {
+          if (textOverlay.scrollHeight > textOverlay.clientHeight) {
+              textOverlay.classList.remove("no-shadow"); // Show shadow if content is scrollable
+          } else {
+              textOverlay.classList.add("no-shadow"); // Hide shadow if no scrolling needed
           }
-
-          // Hide the shadow when user scrolls
-          textOverlay.addEventListener("scroll", function () {
-              if (textOverlay.scrollTop > 5) { 
-                  textOverlay.classList.add("no-shadow"); 
-              }
-          });
-
-          checkScroll(); // Run on page load (Fixed the broken line)
       }
+
+      // Hide the shadow when user scrolls
+      textOverlay.addEventListener("scroll", function () {
+          if (textOverlay.scrollTop > 5) { 
+              textOverlay.classList.add("no-shadow"); 
+          }
+      });
+
+      checkScroll(); // Run on page load
   });
 
 </script>
