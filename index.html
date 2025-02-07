@@ -343,29 +343,33 @@
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
+  var isMobile = window.innerWidth <= 700; // Detect if it's mobile
+
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
     panorama: '/assets/test7.jpg', // Make sure this path is correct
     autoLoad: true,
     showControls: false,
 
-    // ✅ Start fully zoomed in
-    yaw: 0,    // Adjust to the desired initial view angle
-    pitch: 0,  // Adjust for vertical positioning
-    hfov: 30,  // ✅ Start at max zoom (smallest hfov value)
+    // ✅ Start fully zoomed in (only for desktop)
+    yaw: 0,    // Adjust starting horizontal position
+    pitch: 0,  // Adjust vertical positioning
+    hfov: isMobile ? 110 : 30,  // ✅ On mobile: normal zoom, On desktop: fully zoomed in
 
-    autoRotate: 0, // ❌ No rotation at first
+    autoRotate: isMobile ? 2 : 0, // ✅ On mobile: start rotating immediately, On desktop: No rotation at first
     autoRotateInactivityDelay: 3000
   });
 
-  // ✅ Ensure the viewer is fully loaded before executing zoom animation
-  viewer.on("load", function () {
-    setTimeout(function () {
-      zoomOutGradually(110, 5000); // ✅ Zoom out over 5 seconds
-    }, 3000); // ✅ Wait 3 seconds before zooming out
-  });
+  // ✅ Desktop: Wait 3 seconds, then slowly zoom out
+  if (!isMobile) {
+    viewer.on("load", function () {
+      setTimeout(function () {
+        zoomOutGradually(viewer.getHfovBounds().max, 5000); // ✅ Slowly zoom out over 5 seconds
+      }, 3000); // ✅ Wait 3 seconds before zooming out
+    });
+  }
 
-  // ✅ Smooth Zoom-Out Function
+  // ✅ Smooth Zoom-Out Function (For Desktop Only)
   function zoomOutGradually(targetHfov, duration) {
     let startHfov = viewer.getHfov();
     let startTime = performance.now(); // Get start time
@@ -380,19 +384,19 @@
       if (progress < 1) {
         requestAnimationFrame(animateZoomOut);
       } else {
-        startAutoRotate(); // ✅ Start rotation after zoom-out completes
+        startAutoRotate(); // ✅ Start rotation only after fully zoomed out
       }
     }
 
     requestAnimationFrame(animateZoomOut);
   }
 
-  // ✅ Start rotation after zoom-out completes
+  // ✅ Start rotation after zoom-out completes (Desktop only)
   function startAutoRotate() {
     viewer.startAutoRotate(2); // ✅ Begin slow rotation
   }
 
-  // Custom Zoom & Fullscreen Controls
+  // ✅ Custom Zoom & Fullscreen Controls
   document.getElementById('zoomIn').addEventListener('click', function () {
     viewer.setHfov(viewer.getHfov() - 5);
   });
@@ -405,7 +409,7 @@
     viewer.toggleFullscreen();
   });
 
-  // Stop auto-rotation if user interacts
+  // ✅ Stop auto-rotation if user interacts
   viewer.on('mousedown', function () {
     viewer.stopAutoRotate();
   });
