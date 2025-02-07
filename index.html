@@ -56,7 +56,7 @@
       left: 20px;
       display: flex;
       flex-direction: row; /* desktop: vertical */
-      gap: -4px;
+      gap: 0px;
       z-index: 9999;
     }
     .ctrlBtn {
@@ -84,6 +84,12 @@
       z-index: 9999;
       font-size: 1.7em;   /* desktop size */
       font-weight: 600;   /* same as corner titles */
+    }
+
+    .topcornerBody {
+      font-size: 13px;
+      font-weight: 600; 
+      line-height: 1.2;
     }
 
     /* ----------------------------------------------------------
@@ -261,7 +267,12 @@
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <div id="topRightCorner">info@blast-o.com</div>
+  <div id="topRightCorner" class="cornerBox">
+    <span class="cornerTitle">@blasto__</span>
+    <div class="cornerBody">
+      Rinfo@blast-o.com
+    </div>
+  </div>
 
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
