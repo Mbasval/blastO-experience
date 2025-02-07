@@ -334,9 +334,7 @@
   </div>
 
 
-  <!-- Panellum JS -->
-  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-  <!-- Load Panellum first -->
+ <!-- Panellum JS -->
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
@@ -344,7 +342,7 @@
 
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: '/assets/test7.jpg', 
+    panorama: '/assets/test7.jpg', // Check that this path is correct
     autoLoad: true,
     showControls: false,
     yaw: 0,
@@ -377,7 +375,7 @@
   });
 
   // ---------------------------------------
-  // CIRCULAR SHADOW SCROLL HINT 
+  // CIRCULAR SHADOW SCROLL HINT
   // ---------------------------------------
   document.addEventListener("DOMContentLoaded", function () {
       var textOverlay = document.getElementById("textOverlay");
@@ -392,18 +390,19 @@
               }
           }
 
-         
+          // Hide the shadow when user scrolls
           textOverlay.addEventListener("scroll", function () {
               if (textOverlay.scrollTop > 5) { 
                   textOverlay.classList.add("no-shadow"); 
               }
           });
 
-          checkScroll(); /
+          checkScroll(); // Run on page load (Fixed the broken line)
       }
   });
 
 </script>
+
 
 
 </body>
