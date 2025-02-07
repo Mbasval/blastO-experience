@@ -47,15 +47,15 @@
     }
 
     /* ----------------------------------------------------------
-       CUSTOM 360 CONTROLS (no background, thick white)
+       CUSTOM 360 CONTROLS (Desktop: vertical stack)
        ---------------------------------------------------------- */
     #customControls {
       position: fixed;
       top: 20px;
       left: 20px;
       display: flex;
-      flex-direction: column; /* Desktop: vertical stack */
-      gap: -4px;
+      flex-direction: column;
+      gap: 4px;
       z-index: 9999;
     }
     .ctrlBtn {
@@ -69,7 +69,6 @@
     .ctrlBtn:hover {
       opacity: 0.7;
     }
-    /* MOBILE: controls horizontal in prior code; unchanged for desktop here */
 
     /* ----------------------------------------------------------
        TOP-RIGHT CORNER (EMAIL)
@@ -81,8 +80,8 @@
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
       z-index: 9999;
-      font-size: 1.7em;
-      font-weight: 600; /* Same as corner titles */
+      font-size: 1.7em;   /* desktop size */
+      font-weight: 600;   /* same as corner titles */
     }
 
     /* ----------------------------------------------------------
@@ -103,40 +102,6 @@
       max-width: 600px;
       padding: 20px;
       box-sizing: border-box;
-    }
-
-    /* Title: 2em, bold */
-    #textOverlay .title {
-      font-size: 2em;
-      font-weight: 700;
-      margin: 0 0 0.3em 0;
-    }
-    /* "Contemplación…" => bold, 14px, left-aligned */
-    #textOverlay .subtitle {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 1em;
-      text-align: left;
-    }
-    /* Quote => right aligned italic */
-    .intro {
-      font-size: 13px;
-      font-style: italic;
-      font-weight: 400;
-      line-height: 1.4;
-      margin: 0.6em 0;
-      text-align: right;
-    }
-    /* Body paragraphs */
-    .body {
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 1.4;
-      margin: 1.1em 0;
-    }
-    /* Right-align final credit */
-    .body.finalCredit {
-      text-align: right;
     }
 
     /* ----------------------------------------------------------
@@ -173,22 +138,38 @@
 
     /* ==========================================================
        MOBILE-ONLY CHANGES
-       (No changes to desktop layout)
        ========================================================== */
     @media (max-width: 600px) {
 
-      /* MAIN TEXT BOX: more offset from top, wider, 
-         limit height so it doesn't overlap corners. */
+      /* Controls: Horizontal layout */
+      #customControls {
+        top: 10px;
+        left: 10px;
+        flex-direction: row; /* horizontal */
+        gap: 4px;
+      }
+      .ctrlBtn {
+        font-size: 20px;
+      }
+
+      /* Email: Smaller on mobile */
+      #topRightCorner {
+        top: 10px;
+        right: 10px;
+        font-size: 1.3em;  /* Smaller for mobile */
+      }
+
+      /* Main text box: Lower, wider, and scrollable */
       #textOverlay {
         top: 55%;
         transform: translate(-50%, -55%);
-        width: 70%;        /* a bit wider than 60% */
-        max-height: 60vh;  /* hides excess text; user can scroll */
+        width: 70%;        /* Wider */
+        max-height: 60vh;  /* Scrollable */
       }
 
-      /* BOTTOM CORNERS: more separated from each other & possibly smaller */
+      /* Bottom corners: More separation */
       #bottomLeftCorner {
-        bottom: 50px;   /* give extra space from bottom */
+        bottom: 50px;
         left: 20px;
       }
       #bottomRightCorner {
@@ -196,7 +177,7 @@
         right: 20px;
       }
 
-      /* Corner title => smaller on mobile (tasteful) */
+      /* Corner title: Smaller */
       .cornerTitle {
         font-size: 1.3em !important;
       }
@@ -221,54 +202,19 @@
   <!-- MAIN TEXT OVERLAY -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
-    <br>
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
-    <br>
     <p class="intro">
       "Hablar sola, como las piedras.<br>
       Olvidemos que es síntoma de locura y recordemos que el soliloquio puede ser,<br>
       al contrario, la cura a la excesiva humanidad"<br>
       Diana Garza Islas
     </p>
-    <br>
-    <p class="body">
-      Todo lo observable nos da cuenta del tiempo. Movimientos, sonidos, corrosión, emociones... 
-      Desde un breve segundo hasta una extensa era, resultan conformados por la sucesión simultánea 
-      de una infinidad de eventos. En tal caso, la observación se convierte en un instrumento para entender 
-      la naturaleza de dichos acontecimientos y sus relaciones; la contemplación, entonces, resultaría una 
-      herramienta casi quirúrgica para diseccionar los órganos del tiempo.
-    </p>
-    <p class="body">
-      La obra de Blast se desarrolla en esta lógica, donde la templanza es condición para entender su orden. En ella se proyecta una inclinación por la quietud y el equilibrio.
-      Las piedras, manifestadas en sus trazos, nos hablan del tiempo sedimentado, del tiempo contenido en su propia 
-      estructura. Sísifos ya no lucha contra el peso de su propia piedra, sino que se sienta a contemplarla, tal vez 
-      como una forma de reconocerse frente a la eternidad de su condena. Entonces el tiempo devela sus matices, y la 
-      piedra canta su edad geológica.
-    </p>
-    <p class="body">
-      Así también se manifiesta el tiempo de la propia obra, donde la creación se acerca más al acto de observar. 
-      Se muestra el proceso creativo en sus distintas eras, en los soportes explorados y las diversas fases de sus 
-      inquietudes. Podemos contemplar los elementos gráficos que la conforman y cómo prevalecen a través de sus medios, 
-      en una suerte de sedimentación creativa. La obra se va depurando y solo lo necesario perdura, derivando en una 
-      producción artística meditada y consistente, donde hasta el más mínimo gesto remite a su autor.
-    </p>
-    <p class="body">
-      Este repaso es un ensamble donde armonizan las montañas, los ríos y la urbe; la escultura, la instalación y el graffiti. 
-      Blast nos da cuenta de su propio tiempo, de su caminar y meditaciones, su relación con el espacio urbano y cómo ha dado 
-      forma a los ritmos que este le dicta. Así, apropiándose de diversos materiales, ha edificado su íntima arquitectura 
-      para hablarnos también de aquello que antecede a la ciudad: el territorio en toda su extensión histórica y geográfica. 
-      Por ello podemos sentir esa intención de abarcar lo visible y lo invisible, de develar las capas que sustentan todo lo que vemos.
-    </p>
-    <p class="body">
-      Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia 
-      de sus formas y su sutileza, y a elaborar en la templanza nuestro propio soliloquio.
-    </p>
     <p class="body finalCredit">
       <strong>Raúl Márquez, 2025</strong>
     </p>
   </div>
 
-  <!-- CORNERS (Always visible) -->
+  <!-- Bottom Corners -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     <div class="cornerBody">
@@ -291,30 +237,6 @@
     </div>
   </div>
 
-  <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-  <script>
-    // Initialize the panorama. No default controls => user can drag to rotate.
-    var viewer = pannellum.viewer('panorama', {
-      type: 'equirectangular',
-      panorama: '/assets/test7.jpg', // Replace with your 360 image path
-      autoLoad: true,
-      showControls: false,
-      yaw: 0,
-      pitch: 0,
-      hfov: 110
-    });
-
-    // Custom zoom & fullscreen
-    document.getElementById('zoomIn').addEventListener('click', function(){
-      viewer.setHfov(viewer.getHfov() - 5);
-    });
-    document.getElementById('zoomOut').addEventListener('click', function(){
-      viewer.setHfov(viewer.getHfov() + 5);
-    });
-    document.getElementById('toggleFullscreen').addEventListener('click', function(){
-      viewer.toggleFullscreen();
-    });
-  </script>
 </body>
 </html>
