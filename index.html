@@ -178,10 +178,10 @@
     @media (max-width: 600px) {
 
       #textOverlay {
-        top: 55%;
+        top: 45%;
         transform: translate(-50%, -55%);
-        width: 70%;        /* a bit wider than 60% */
-        max-height: 60vh;  /* hides excess text; user can scroll */
+        width: 80%;        
+        max-height: 50vh;  
       }
 
       /* Controls => horizontal instead of vertical */
@@ -207,9 +207,15 @@
         font-size: 1.3em !important; 
       }
 
-      /* main textOverlay => keep as is or tweak if needed?
-         Currently no further changes, so it remains the same. 
-       */
+      #bottomLeftCorner {
+        bottom: 80px; /* Moves the left corner higher */
+        left: 20px;   /* Adjusts the spacing from the edge */
+      }
+
+      #bottomRightCorner {
+        bottom: 20px; /* Moves the right corner lower */
+        right: 20px;  /* Adjusts spacing from the edge */
+      }
     }
   </style>
 </head>
