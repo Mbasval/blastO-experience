@@ -360,11 +360,13 @@
     autoRotateInactivityDelay: 3000
   });
 
+  var maxHfov = 110; // ✅ Manually set max zoom-out level
+
   // ✅ Desktop: Wait 3 seconds, then slowly zoom out
   if (!isMobile) {
     viewer.on("load", function () {
       setTimeout(function () {
-        zoomOutGradually(viewer.getHfovBounds().max, 5000); // ✅ Slowly zoom out over 5 seconds
+        zoomOutGradually(maxHfov, 5000); // ✅ Slowly zoom out over 5 seconds
       }, 3000); // ✅ Wait 3 seconds before zooming out
     });
   }
@@ -379,6 +381,12 @@
       let progress = Math.min(elapsed / duration, 1); // Normalize progress (0 to 1)
       
       let newHfov = startHfov + (targetHfov - startHfov) * progress;
+
+      // ✅ Prevent hfov from going out of bounds
+      if (newHfov > maxHfov) {
+        newHfov = maxHfov;
+      }
+
       viewer.setHfov(newHfov);
 
       if (progress < 1) {
@@ -419,7 +427,6 @@
   });
 
 </script>
-
 
 
 </body>
