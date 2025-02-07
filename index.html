@@ -349,43 +349,47 @@
     autoLoad: true,
     showControls: false,
 
-    //  Start fully zoomed in
+    // ✅ Start fully zoomed in
     yaw: 0,    // Adjust to the desired initial view angle
     pitch: 0,  // Adjust for vertical positioning
-    hfov: 30,  //  Start at max zoom (smallest hfov value)
+    hfov: 30,  // ✅ Start at max zoom (smallest hfov value)
 
-    autoRotate: 0, //  No rotation at first
+    autoRotate: 0, // ❌ No rotation at first
     autoRotateInactivityDelay: 3000
   });
 
-  // Step 1: Wait 3 seconds, then slowly zoom out
-  setTimeout(function () {
-    zoomOutGradually(viewer.getHfovBounds().max, 5000); //  Zoom out over 5 seconds
-  }, 3000); //  3-second delay before zooming out
+  // ✅ Ensure the viewer is fully loaded before executing zoom animation
+  viewer.on("load", function () {
+    setTimeout(function () {
+      zoomOutGradually(110, 5000); // ✅ Zoom out over 5 seconds
+    }, 3000); // ✅ Wait 3 seconds before zooming out
+  });
 
-  // Step 2: Slowly zoom out
+  // ✅ Smooth Zoom-Out Function
   function zoomOutGradually(targetHfov, duration) {
     let startHfov = viewer.getHfov();
-    let zoomSteps = 50; // Number of steps in animation
-    let stepTime = duration / zoomSteps; // Time per step
+    let startTime = performance.now(); // Get start time
 
-    let stepSize = (targetHfov - startHfov) / zoomSteps;
-    let currentStep = 0;
+    function animateZoomOut(currentTime) {
+      let elapsed = currentTime - startTime;
+      let progress = Math.min(elapsed / duration, 1); // Normalize progress (0 to 1)
+      
+      let newHfov = startHfov + (targetHfov - startHfov) * progress;
+      viewer.setHfov(newHfov);
 
-    let zoomInterval = setInterval(function () {
-      if (currentStep >= zoomSteps) {
-        clearInterval(zoomInterval); //  Stop zooming
-        startAutoRotate(); //  Start auto-rotating after zoom completes
+      if (progress < 1) {
+        requestAnimationFrame(animateZoomOut);
       } else {
-        viewer.setHfov(viewer.getHfov() + stepSize);
-        currentStep++;
+        startAutoRotate(); // ✅ Start rotation after zoom-out completes
       }
-    }, stepTime);
+    }
+
+    requestAnimationFrame(animateZoomOut);
   }
 
-  // Step 3: Start rotation after zoom out completes
+  // ✅ Start rotation after zoom-out completes
   function startAutoRotate() {
-    viewer.startAutoRotate(2); //  Begin slow rotation
+    viewer.startAutoRotate(2); // ✅ Begin slow rotation
   }
 
   // Custom Zoom & Fullscreen Controls
@@ -411,7 +415,6 @@
   });
 
 </script>
-
 
 
 
