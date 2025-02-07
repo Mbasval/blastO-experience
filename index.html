@@ -186,8 +186,8 @@
 
       /* Controls => horizontal instead of vertical */
       #customControls {
-        top: 10px;
-        left: 10px;
+        top: 25px;
+        left: 15px;
         flex-direction: row; /* horizontal layout on mobile */
         gap: 4px;            /* small gap horizontally */
       }
@@ -197,8 +197,8 @@
 
       /* Email => smaller for mobile */
       #topRightCorner {
-        top: 10px;
-        right: 10px;
+        top: 25px;
+        right: 15px;
         font-size: 1em;  /* smaller than desktop 1.7em */
       }
 
@@ -214,7 +214,7 @@
 
       #bottomLeftCorner,
       #bottomRightCorner {
-        bottom: 20px;
+        bottom: 25px;
         width: 45%;
         display: flex;
         flex-direction: column;
@@ -224,13 +224,14 @@
       }
 
       #bottomLeftCorner {
-        left: 20px;
+        left: 25px;
         text-align: left; /* Ensures correct text alignment */
       }
 
       #bottomRightCorner {
-        right: 20px;
+        right: 25px;
         text-align: right; /* Ensures correct text alignment */
+        align-self: flex-start;
       }
     }
   </style>
@@ -326,19 +327,18 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-  // Detect if the user is on mobile (screen width <= 600px)
-  var isMobile = window.innerWidth <= 600;
+  var isMobile = window.innerWidth <= 700; // Detect mobile device
 
-  // Initialize the panorama
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
     panorama: '/assets/test7.jpg', // Replace with your 360 image path
     autoLoad: true,
     showControls: false,
-    yaw: 0,  // Starting position
+    yaw: 0,
     pitch: 0,
     hfov: 110,
-    autoRotate: isMobile ? 2 : 0 // Auto-rotate ONLY on mobile (2° per second)
+    autoRotate: isMobile ? 2 : 0, // Auto-rotate ONLY on mobile
+    autoRotateInactivityDelay: 3000 // Prevents stopping too soon (3s delay)
   });
 
   // Custom Zoom & Fullscreen Controls
@@ -354,7 +354,7 @@
     viewer.toggleFullscreen();
   });
 
-  // Stop auto-rotation if user interacts (dragging stops rotation)
+  // Stop auto-rotation if user interacts
   viewer.on('mousedown', function () {
     viewer.stopAutoRotate();
   });
@@ -363,7 +363,8 @@
     viewer.stopAutoRotate();
   });
 
-  </script>
+</script>
+
 </body>
 </html>
 
