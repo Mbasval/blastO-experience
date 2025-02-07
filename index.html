@@ -215,7 +215,7 @@
       #bottomLeftCorner,
       #bottomRightCorner {
         bottom: 25px;
-        width: 45%;
+        width: 40%;
         display: flex;
         flex-direction: column;
         justify-content: flex-start; /* Aligns text to the top */
@@ -231,6 +231,24 @@
       #bottomRightCorner {
         right: 25px;
         text-align: left; /* Ensures correct text alignment */
+      }
+
+      #textOverlay::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30px; /* Adjust height to control how noticeable the fade is */
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 100%);
+        pointer-events: none; /* Ensures it does not interfere with scrolling */
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      /* Hide the shadow when user scrolls */
+      #textOverlay.no-shadow::after {
+        opacity: 0;
+        visibility: hidden;
       }
     }
   </style>
@@ -322,6 +340,72 @@
       Acceso Libre
     </div>
   </div>
+
+
+<script>
+  var isMobile = window.innerWidth <= 600; // Detect mobile device
+
+  var viewer = pannellum.viewer('panorama', {
+    type: 'equirectangular',
+    panorama: '/assets/test7.jpg', // Replace with your 360 image path
+    autoLoad: true,
+    showControls: false,
+    yaw: 0,
+    pitch: 0,
+    hfov: 110,
+    autoRotate: isMobile ? 2 : 0, // Auto-rotate ONLY on mobile
+    autoRotateInactivityDelay: 3000 // Prevents stopping too soon (3s delay)
+  });
+
+  // Custom Zoom & Fullscreen Controls
+  document.getElementById('zoomIn').addEventListener('click', function () {
+    viewer.setHfov(viewer.getHfov() - 5);
+  });
+
+  document.getElementById('zoomOut').addEventListener('click', function () {
+    viewer.setHfov(viewer.getHfov() + 5);
+  });
+
+  document.getElementById('toggleFullscreen').addEventListener('click', function () {
+    viewer.toggleFullscreen();
+  });
+
+  // Stop auto-rotation if user interacts
+  viewer.on('mousedown', function () {
+    viewer.stopAutoRotate();
+  });
+
+  viewer.on('touchstart', function () {
+    viewer.stopAutoRotate();
+  });
+
+  // ---------------------------------------
+  // ADD THIS PART FOR THE SCROLL SHADOW HINT
+  // ---------------------------------------
+  document.addEventListener("DOMContentLoaded", function () {
+      var textOverlay = document.getElementById("textOverlay");
+
+      // Only run on mobile
+      if (window.innerWidth <= 600) {
+          function checkScroll() {
+              if (textOverlay.scrollHeight > textOverlay.clientHeight) {
+                  textOverlay.classList.remove("no-shadow"); // Show shadow if content is scrollable
+              } else {
+                  textOverlay.classList.add("no-shadow"); // Hide shadow if no scrolling is needed
+              }
+          }
+
+          // Hide the shadow when user scrolls
+          textOverlay.addEventListener("scroll", function () {
+              textOverlay.classList.add("no-shadow"); // Fade out shadow
+          });
+
+          checkScroll(); // Run on page load
+      }
+  });
+
+</script>
+
 
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
