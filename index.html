@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mutanza 360° Exhibit</title>
+  <title>Mutanza Exhibición</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Arimo from Google Fonts -->
@@ -37,7 +37,7 @@
     }
 
     /* ----------------------------------------------------------
-       PANORAMA (Fullscreen behind everything)
+       PANORAMA 
        ---------------------------------------------------------- */
     #panorama {
       position: fixed;
@@ -48,7 +48,7 @@
     }
 
     /* ----------------------------------------------------------
-       CUSTOM 360 CONTROLS (no background, thick white)
+       CUSTOM 360 CONTROLS 
        ---------------------------------------------------------- */
     #customControls {
       position: fixed;
@@ -105,20 +105,19 @@
       box-sizing: border-box;
     }
 
-    /* Title: 2em, bold */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
-    /* Bold, size 14, left-aligned */
+  
     #textOverlay .subtitle {
       font-size: 14px;
       font-weight: 700;
       margin-bottom: 1em;
       text-align: left;
     }
-    /* Quote => right aligned italic */
+ 
     .intro {
       font-size: 13px;
       font-style: italic;
@@ -127,20 +126,20 @@
       margin: 0.6em 0;
       text-align: right;
     }
-    /* Body: 12px normal */
+
     .body {
       font-size: 12px;
       font-weight: 400;
       line-height: 1.4;
       margin: 1.1em 0;
     }
-    /* Right-align final credit */
+
     .body.finalCredit {
       text-align: right;
     }
 
     /* ----------------------------------------------------------
-       CORNERS (ALWAYS VISIBLE)
+       CORNERS 
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
@@ -173,7 +172,7 @@
     }
 
     /* ==========================================================
-       MOBILE-ONLY CHANGES (NO CHANGES TO DESKTOP)
+       MOBILE-ONLY CHANGES 
        ========================================================== */
     @media (max-width: 600px) {
 
@@ -184,32 +183,30 @@
         max-height: 60vh;  
       }
 
-      /* Controls => horizontal instead of vertical */
+      /* Controls horizontal  */
       #customControls {
         top: 25px;
         left: 15px;
-        flex-direction: row; /* horizontal layout on mobile */
-        gap: 4px;            /* small gap horizontally */
+        flex-direction: row; 
+        gap: 4px;           
       }
       .ctrlBtn {
         font-size: 20px;
       }
 
-      /* Email => smaller for mobile */
       #topRightCorner {
         top: 25px;
         right: 15px;
-        font-size: 1em;  /* smaller than desktop 1.7em */
+        font-size: 1em;  
       }
 
-      /* Corner titles => smaller, e.g. 1.3em */
       .cornerTitle {
         font-size: 0.9em !important; 
       }
 
       .cornerBody {
-        font-size: 10px !important; /* Smaller body text */
-        line-height: 1.1; /* Tighter spacing */
+        font-size: 10px !important; 
+        line-height: 1.1; 
       }
 
       #bottomLeftCorner,
@@ -218,58 +215,53 @@
         width: 40%;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; /* Aligns text to the top */
+        justify-content: flex-start;
         align-items: flex-start;
-        min-height: 100px; /* Ensures both boxes have equal height */
+        min-height: 100px;
       }
 
       #bottomLeftCorner {
         left: 25px;
-        text-align: left; /* Ensures correct text alignment */
+        text-align: left; 
       }
 
       #bottomRightCorner {
         right: 25px;
-        text-align: left; /* Ensures correct text alignment */
-      }
+        text-align: left;
 
       #textOverlay::after {
-    content: "";
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;  /* Adjust width to control size */
-    height: 20px; /* Adjust height for circular effect */
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 80%);
-    pointer-events: none; /* Ensures it does not interfere with scrolling */
-    transition: opacity 0.3s ease-in-out;
-  }
+        content: "";
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;  /* Adjust width to control size */
+        height: 20px; /* Adjust height for circular effect */
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 80%);
+        pointer-events: none; /* Ensures it does not interfere with scrolling */
+        transition: opacity 0.3s ease-in-out;
+      }
 
-  /* Hide the shadow when scrolling starts */
-  #textOverlay.no-shadow::after {
-    opacity: 0;
-    visibility: hidden;
-  }
+    /* Hide the shadow when scrolling starts */
+      #textOverlay.no-shadow::after {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- 360° Panorama -->
   <div id="panorama"></div>
-
-  <!-- Custom 360 Controls -->
+  
   <div id="customControls">
     <button class="ctrlBtn" id="zoomIn">+</button>
     <button class="ctrlBtn" id="zoomOut">–</button>
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top-right Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- MAIN TEXT OVERLAY (Desktop left as-is) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <br>
@@ -319,7 +311,6 @@
     </p>
   </div>
 
-  <!-- CORNERS (Always visible) -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     <div class="cornerBody">
@@ -343,19 +334,24 @@
   </div>
 
 
+  <!-- Panellum JS -->
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <!-- Load Panellum first -->
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
 <script>
-  var isMobile = window.innerWidth <= 600; // Detect mobile device
+  var isMobile = window.innerWidth <= 700; 
 
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: '/assets/test7.jpg', // Replace with your 360 image path
+    panorama: '/assets/test7.jpg', 
     autoLoad: true,
     showControls: false,
     yaw: 0,
     pitch: 0,
     hfov: 110,
-    autoRotate: isMobile ? 2 : 0, // Auto-rotate ONLY on mobile
-    autoRotateInactivityDelay: 3000 // Prevents stopping too soon (3s delay)
+    autoRotate: isMobile ? 2 : 0, 
+    autoRotateInactivityDelay: 3000 
   });
 
   // Custom Zoom & Fullscreen Controls
@@ -381,13 +377,13 @@
   });
 
   // ---------------------------------------
-  // CIRCULAR SHADOW SCROLL HINT (Only on Mobile)
+  // CIRCULAR SHADOW SCROLL HINT 
   // ---------------------------------------
   document.addEventListener("DOMContentLoaded", function () {
       var textOverlay = document.getElementById("textOverlay");
 
       // Only run on mobile
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 700) {
           function checkScroll() {
               if (textOverlay.scrollHeight > textOverlay.clientHeight) {
                   textOverlay.classList.remove("no-shadow"); // Show shadow if content is scrollable
@@ -396,61 +392,19 @@
               }
           }
 
-          // Hide the shadow when user scrolls
+         
           textOverlay.addEventListener("scroll", function () {
-              if (textOverlay.scrollTop > 5) { // Detects if user has started scrolling
-                  textOverlay.classList.add("no-shadow"); // Fade out shadow
+              if (textOverlay.scrollTop > 5) { 
+                  textOverlay.classList.add("no-shadow"); 
               }
           });
 
-          checkScroll(); // Run on page load
+          checkScroll(); /
       }
   });
 
 </script>
 
-
-
-  <!-- Panellum JS -->
-  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-  <script>
-  var isMobile = window.innerWidth <= 700; // Detect mobile device
-
-  var viewer = pannellum.viewer('panorama', {
-    type: 'equirectangular',
-    panorama: '/assets/test7.jpg', // Replace with your 360 image path
-    autoLoad: true,
-    showControls: false,
-    yaw: 0,
-    pitch: 0,
-    hfov: 110,
-    autoRotate: isMobile ? 2 : 0, // Auto-rotate ONLY on mobile
-    autoRotateInactivityDelay: 3000 // Prevents stopping too soon (3s delay)
-  });
-
-  // Custom Zoom & Fullscreen Controls
-  document.getElementById('zoomIn').addEventListener('click', function () {
-    viewer.setHfov(viewer.getHfov() - 5);
-  });
-
-  document.getElementById('zoomOut').addEventListener('click', function () {
-    viewer.setHfov(viewer.getHfov() + 5);
-  });
-
-  document.getElementById('toggleFullscreen').addEventListener('click', function () {
-    viewer.toggleFullscreen();
-  });
-
-  // Stop auto-rotation if user interacts
-  viewer.on('mousedown', function () {
-    viewer.stopAutoRotate();
-  });
-
-  viewer.on('touchstart', function () {
-    viewer.stopAutoRotate();
-  });
-
-</script>
 
 </body>
 </html>
