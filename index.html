@@ -55,7 +55,7 @@
       top: 20px;
       left: 20px;
       display: flex;
-      flex-direction: column; /* desktop: vertical */
+      flex-direction: row; /* desktop: vertical */
       gap: -4px;
       z-index: 9999;
     }
@@ -65,7 +65,7 @@
       color: #fff;
       font-size: 24px;
       font-weight: 700;
-      text-shadow: 0 0 7px rgba(0, 0, 0, 0.7);
+      text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
       cursor: pointer;
     }
     .ctrlBtn:hover {
@@ -80,7 +80,7 @@
       top: 40px;
       right: 40px;
       color: #fff;
-      text-shadow: 0 0 7px rgba(0, 0, 0, 0.7);
+      text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
       z-index: 9999;
       font-size: 1.7em;   /* desktop size */
       font-weight: 600;   /* same as corner titles */
@@ -96,11 +96,7 @@
       transform: translate(-50%, -50%);
       z-index: 999;
       color: #fff;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-      text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+      text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
       max-height: 90vh;
       overflow-y: auto;
       pointer-events: auto;
@@ -149,7 +145,7 @@
     .cornerBox {
       position: fixed;
       color: #fff;
-      text-shadow: 0 0 7px rgba(0, 0, 0, 0.7);
+      text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
       z-index: 9999;
       width: 280px;
       box-sizing: border-box;
@@ -328,7 +324,7 @@
   <div id="bottomRightCorner" class="cornerBox">
     <span class="cornerTitle">
       Exposición<br>
-      31.02 — 01.03 (2024)
+      31.02 — 01.03 (2025)
     </span>
     <div class="cornerBody">
       Lunes a Viernes 10:00 AM — 8:00 PM<br>
@@ -355,7 +351,7 @@
     pitch: 0,  // Starting vertical angle
     hfov: 110, // Default field of view (normal zoom)
 
-    autoRotate: isMobile ? 2 : 2, // Auto-rotate for both mobile & desktop
+    autoRotate: isMobile ? -2 : -2, // Auto-rotate for both mobile & desktop
     autoRotateInactivityDelay: 3000
   });
 
