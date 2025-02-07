@@ -349,16 +349,21 @@
     autoLoad: true,
     showControls: false,
 
-    // Set the exact part of the image to start from
-    yaw: -45,  // Left (-) / Right (+) [Horizontal starting position]
-    pitch: 10, // Up (+) / Down (-) [Vertical starting position]
-    hfov: 50,  //  Start zoomed in
+    //  Start fully zoomed in
+    yaw: 0,    // Adjust to the desired initial view angle
+    pitch: 0,  // Adjust for vertical positioning
+    hfov: 30,  //  Start at max zoom (smallest hfov value)
 
-    autoRotate: 0, //  No rotation initially 
+    autoRotate: 0, //  No rotation at first
     autoRotateInactivityDelay: 3000
   });
 
-  // Step 1: Slowly zoom out
+  // Step 1: Wait 3 seconds, then slowly zoom out
+  setTimeout(function () {
+    zoomOutGradually(viewer.getHfovBounds().max, 5000); //  Zoom out over 5 seconds
+  }, 3000); //  3-second delay before zooming out
+
+  // Step 2: Slowly zoom out
   function zoomOutGradually(targetHfov, duration) {
     let startHfov = viewer.getHfov();
     let zoomSteps = 50; // Number of steps in animation
@@ -369,7 +374,7 @@
 
     let zoomInterval = setInterval(function () {
       if (currentStep >= zoomSteps) {
-        clearInterval(zoomInterval); // Stop zooming
+        clearInterval(zoomInterval); //  Stop zooming
         startAutoRotate(); //  Start auto-rotating after zoom completes
       } else {
         viewer.setHfov(viewer.getHfov() + stepSize);
@@ -378,15 +383,10 @@
     }, stepTime);
   }
 
-  // Step 2: Start rotation after zoom out completes
+  // Step 3: Start rotation after zoom out completes
   function startAutoRotate() {
-    viewer.startAutoRotate(2); // Begin slow rotation
+    viewer.startAutoRotate(2); //  Begin slow rotation
   }
-
-  // Start zooming out after the scene loads
-  viewer.on("load", function () {
-    zoomOutGradually(110, 5000); //  Slowly zoom out over 5 seconds
-  });
 
   // Custom Zoom & Fullscreen Controls
   document.getElementById('zoomIn').addEventListener('click', function () {
@@ -411,6 +411,7 @@
   });
 
 </script>
+
 
 
 
