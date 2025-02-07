@@ -13,22 +13,22 @@
 
   <style>
     /* ----------------------------------------------------------
-       GLOBAL / BODY
+       GLOBAL
        ---------------------------------------------------------- */
     html, body {
       margin: 0;
       padding: 0;
       background: #000;
       font-family: 'Arimo', sans-serif;
-      /* No scrolling on the body; Pannellum handles rotation by drag */
+     
       overflow: hidden;
       width: 100%;
       height: 100%;
     }
 
     ::selection {
-      background: #000; /* black highlight */
-      color: #fff;      /* white text */
+      background: #000; 
+      color: #fff;      
     }
 
     ::-moz-selection {
@@ -48,14 +48,14 @@
     }
 
     /* ----------------------------------------------------------
-       CUSTOM 360 CONTROLS 
+      360 CONTROLS 
        ---------------------------------------------------------- */
     #customControls {
       position: fixed;
       top: 20px;
       left: 20px;
       display: flex;
-      flex-direction: row; /* desktop: vertical */
+      flex-direction: row;
       gap: 0px;
       z-index: 9999;
     }
@@ -73,7 +73,7 @@
     }
 
     /* ----------------------------------------------------------
-       TOP-RIGHT CORNER (EMAIL)
+       CONTACT
        ---------------------------------------------------------- */
    
 
@@ -85,7 +85,7 @@
       text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
       z-index: 9999;
       text-align: left;
-      width: 250px; /* Matches bottom corner width */
+      width: 250px; 
       display: flex;
       flex-direction: column;
       align-items: flex-end; 
@@ -105,7 +105,7 @@
     }
     
     /* ----------------------------------------------------------
-       MAIN TEXT OVERLAY
+       MAIN TEXT 
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
@@ -158,7 +158,7 @@
     }
 
     /* ----------------------------------------------------------
-       CORNERS 
+       CORNERS BOT
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
@@ -191,7 +191,7 @@
     }
 
     /* ==========================================================
-       MOBILE-ONLY CHANGES 
+       MOBILE-ONLY
        ========================================================== */
     @media (max-width: 600px) {
 
@@ -261,7 +261,7 @@
         transition: opacity 0.3s ease-in-out;
       }
 
-    /* Hide the shadow when scrolling starts */
+    
       #textOverlay.no-shadow::after {
         opacity: 0;
         visibility: hidden;
