@@ -212,17 +212,25 @@
         line-height: 1.1; /* Tighter spacing */
       }
 
-      #bottomLeftCorner {
+      #bottomLeftCorner,
+      #bottomRightCorner {
         bottom: 20px;
-        left: 20px;
         width: 45%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Aligns text to the top */
+        align-items: flex-start;
+        min-height: 80px; /* Ensures both boxes have equal height */
+      }
+
+      #bottomLeftCorner {
+        left: 20px;
+        text-align: left; /* Ensures correct text alignment */
       }
 
       #bottomRightCorner {
-        bottom: 20px;
         right: 20px;
-        width: 45%;
-        text-align: left;
+        text-align: right; /* Ensures correct text alignment */
       }
     }
   </style>
@@ -318,27 +326,46 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the panorama (drag to rotate)
-    var viewer = pannellum.viewer('panorama', {
-      type: 'equirectangular',
-      panorama: '/assets/test7.jpg', // Replace with your 360 image path
-      autoLoad: true,
-      showControls: false,
-      yaw: 0,
-      pitch: 0,
-      hfov: 110
-    });
+  // Detect if the user is on mobile (screen width <= 600px)
+  var isMobile = window.innerWidth <= 600;
 
-    // Custom zoom & fullscreen
-    document.getElementById('zoomIn').addEventListener('click', function(){
-      viewer.setHfov(viewer.getHfov() - 5);
-    });
-    document.getElementById('zoomOut').addEventListener('click', function(){
-      viewer.setHfov(viewer.getHfov() + 5);
-    });
-    document.getElementById('toggleFullscreen').addEventListener('click', function(){
-      viewer.toggleFullscreen();
-    });
+  // Initialize the panorama
+  var viewer = pannellum.viewer('panorama', {
+    type: 'equirectangular',
+    panorama: '/assets/test7.jpg', // Replace with your 360 image path
+    autoLoad: true,
+    showControls: false,
+    yaw: 0,  // Starting position
+    pitch: 0,
+    hfov: 110,
+    autoRotate: isMobile ? 2 : 0 // Auto-rotate ONLY on mobile (2° per second)
+  });
+
+  // Custom Zoom & Fullscreen Controls
+  document.getElementById('zoomIn').addEventListener('click', function () {
+    viewer.setHfov(viewer.getHfov() - 5);
+  });
+
+  document.getElementById('zoomOut').addEventListener('click', function () {
+    viewer.setHfov(viewer.getHfov() + 5);
+  });
+
+  document.getElementById('toggleFullscreen').addEventListener('click', function () {
+    viewer.toggleFullscreen();
+  });
+
+  // Stop auto-rotation if user interacts (dragging stops rotation)
+  viewer.on('mousedown', function () {
+    viewer.stopAutoRotate();
+  });
+
+  viewer.on('touchstart', function () {
+    viewer.stopAutoRotate();
+  });
+
   </script>
+</body>
+</html>
+
 </body>
 </html>
