@@ -75,7 +75,7 @@
     /* ----------------------------------------------------------
        TOP-RIGHT CORNER (EMAIL)
        ---------------------------------------------------------- */
-    #topRightCorner {
+    /*#topRightCorner {
       position: fixed;
       top: 40px;
       right: 40px;
@@ -84,8 +84,32 @@
       z-index: 9999;
       font-size: 1.7em;   /* desktop size */
       font-weight: 600;   /* same as corner titles */
+    }*/
+
+    #topRightCorner {
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      color: #fff;
+      text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
+      z-index: 9999;
+      text-align: right;
+    width: 250px; /* Matches bottom corner width */
     }
 
+    #topRightCorner .cornerTitle {
+      font-size: 1.7em; /* Same size as other corner titles */
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #topRightCorner .cornerBody {
+      font-size: 13px; /* Same as bottom corner body */
+      font-weight: 600; 
+      line-height: 1.2;
+    }
+    
     /* ----------------------------------------------------------
        MAIN TEXT OVERLAY
        ---------------------------------------------------------- */
@@ -262,8 +286,15 @@
   </div>
 
 
+
+  <div id="topRightCorner">
+    <span class="cornerTitle">@blasto__</span>
+      <div class="cornerBody">
+        info@blast-o.com
+      </div>
+  </div>
   
-    <div id="topRightCorner">info@blast-o.com</div>
+  /*<div id="topRightCorner">@blasto__</div>*/
  
 
   <div id="textOverlay">
