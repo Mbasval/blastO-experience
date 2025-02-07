@@ -254,10 +254,10 @@
         bottom: 10px;
         left: 50%;
         transform: translateX(-50%);
-        width: 40px;  /* Adjust width to control size */
-        height: 20px; /* Adjust height for circular effect */
+        width: 40px;  
+        height: 20px; 
         background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 80%);
-        pointer-events: none; /* Ensures it does not interfere with scrolling */
+        pointer-events: none;
         transition: opacity 0.3s ease-in-out;
       }
 
@@ -367,11 +367,11 @@
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
-  var isMobile = window.innerWidth <= 700; // Detect if it's mobile
+  var isMobile = window.innerWidth <= 700; 
 
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: '/assets/test7.jpg', // Ensure this path is correct
+    panorama: '/assets/test7.jpg', 
     autoLoad: true,
     showControls: false,
 
@@ -379,7 +379,7 @@
     pitch: 0,  // Starting vertical angle
     hfov: 110, // Default field of view (normal zoom)
 
-    autoRotate: isMobile ? -2 : -2, // Auto-rotate for both mobile & desktop
+    autoRotate: isMobile ? -2 : -2, 
     autoRotateInactivityDelay: 3000
   });
 
