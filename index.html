@@ -43,10 +43,10 @@
     #customControls {
       position: fixed;
       top: 20px;
-      left: 20px;
+      left: 15px;  /* Slightly closer */
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;    /* A bit smaller gap */
       z-index: 9999;
     }
     .ctrlBtn {
@@ -64,7 +64,7 @@
       #customControls {
         top: 10px;
         left: 10px;
-        gap: 8px;
+        gap: 4px;
       }
       .ctrlBtn {
         font-size: 20px;
@@ -111,34 +111,43 @@
       pointer-events: auto;
 
       /* Desktop sizing */
-      width: 60%;       /* narrower so there's plenty of space around it */
-      max-width: 480px; /* limit it for large screens */
+      width: 60%;
+      max-width: 480px;
       padding: 10px;
       box-sizing: border-box;
     }
-    /* Title, Subtitle, Intro, Body styling */
+    /* Title: 2em, bold (unchanged) */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
+    /* "Contemplación y tiempo…" => bold, size 14, left-aligned */
     #textOverlay .subtitle {
       font-size: 14px;
+      font-weight: 700; /* bold */
       margin-bottom: 1em;
-      font-weight: 400;
+      text-align: left;
     }
+    /* The quote => right aligned, normal italic (weight 400) */
     .intro {
       font-size: 12px;
       font-style: italic;
-      font-weight: 300;
+      font-weight: 400;   /* normal */
       line-height: 1.4;
       margin: 0.6em 0;
+      text-align: right;  /* right aligned */
     }
+    /* Body: 12px normal */
     .body {
       font-size: 12px;
       font-weight: 400;
       line-height: 1.4;
       margin: 0.6em 0;
+    }
+    /* Right-align "Raúl Márquez, 2025" */
+    .body.finalCredit {
+      text-align: right;
     }
 
     /* On phones, we shrink the width even further so there's guaranteed space for dragging. */
@@ -175,6 +184,23 @@
       width: 180px; /* slightly smaller so they’re not too wide on mobile */
       box-sizing: border-box;
     }
+    /* Corner titles => 2em semibold (approx. font-weight 600) */
+    .cornerTitle {
+      font-size: 2em;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+    /* Corner body => 14px semibold */
+    .cornerBody {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      /* Prevent undesired line breaks if you wish: white-space: nowrap; 
+         But be careful of overflow on smaller screens. 
+      */
+    }
+
     #bottomLeftCorner {
       bottom: 20px;
       left: 20px;
@@ -184,19 +210,6 @@
       right: 20px;
       text-align: right;
     }
-    .cornerTitle {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    /* ----------------------------------------------------------
-       NO "two-column" mobile footer, since corners remain always
-       visible as you requested.
-       (If you still want a 2-column inside the text, we can do that,
-       but this code keeps corners visible for all screens.)
-       ---------------------------------------------------------- */
   </style>
 </head>
 <body>
@@ -217,13 +230,15 @@
   <!-- MAIN TEXT OVERLAY (Centered, Scrollable, Narrow Enough to Drag) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
+    <!-- Now bold, size 14, left-aligned -->
     <div class="subtitle">Contemplación y tiempo: hacer cantar las piedras</div>
 
+    <!-- Right-aligned, normal italic -->
     <p class="intro">
       "Hablar sola, como las piedras.<br>
       Olvidemos que es síntoma de locura y recordemos que el soliloquio puede ser,<br>
       al contrario, la cura a la excesiva humanidad"<br>
-      <em>Diana Garza Islas</em>
+      Diana Garza Islas
     </p>
 
     <p class="body">
@@ -261,7 +276,8 @@
       Finalmente nos invita a meditar el tiempo en su sentido más amplio y a la vez más íntimo, a contemplar la extravagancia 
       de sus formas y su sutileza, y a elaborar en la templanza nuestro propio soliloquio.
     </p>
-    <p class="body" style="margin-top: 1em;">
+    <!-- Right-aligned final credit -->
+    <p class="body finalCredit">
       <strong>Raúl Márquez, 2025</strong>
     </p>
   </div>
@@ -269,16 +285,22 @@
   <!-- CORNERS (ALWAYS VISIBLE) -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
-    Río Éufrates y Av. Vasconcelos,<br>
-    Del Valle Sector Fátima,<br>
-    66220 San Pedro Garza García<br>
-    N.L. México
+    <!-- 14px semibold lines -->
+    <div class="cornerBody">
+      Río Éufrates y Av. Vasconcelos,<br>
+      Del Valle Sector Fátima,<br>
+      66220 San Pedro Garza García<br>
+      N.L. México
+    </div>
   </div>
   <div id="bottomRightCorner" class="cornerBox">
     <span class="cornerTitle">Exposición<br>31.02 — 01.03 (2024)</span>
-    Lunes a Viernes 10:00 AM — 8:00 PM<br>
-    Sábado 10:00 AM — 7:00 PM<br>
-    Acceso Libre
+    <!-- 14px semibold lines, keep "Lunes a Viernes 10:00 AM — 8:00 PM" on one line -->
+    <div class="cornerBody">
+      Lunes a Viernes 10:00 AM — 8:00 PM<br>
+      Sábado 10:00 AM — 7:00 PM<br>
+      Acceso Libre
+    </div>
   </div>
 
   <!-- Panellum JS -->
