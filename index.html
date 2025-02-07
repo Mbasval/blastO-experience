@@ -345,14 +345,47 @@
 <script>
   var viewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: '/assets/test7.jpg', 
+    panorama: '/assets/test7.jpg', // Make sure this path is correct
     autoLoad: true,
     showControls: false,
-    yaw: 0,
-    pitch: 0,
-    hfov: 110,
-    autoRotate: 2, //
-    autoRotateInactivityDelay: 3000 
+
+    // Set the exact part of the image to start from
+    yaw: -45,  // Left (-) / Right (+) [Horizontal starting position]
+    pitch: 10, // Up (+) / Down (-) [Vertical starting position]
+    hfov: 50,  //  Start zoomed in
+
+    autoRotate: 0, //  No rotation initially 
+    autoRotateInactivityDelay: 3000
+  });
+
+  // Step 1: Slowly zoom out
+  function zoomOutGradually(targetHfov, duration) {
+    let startHfov = viewer.getHfov();
+    let zoomSteps = 50; // Number of steps in animation
+    let stepTime = duration / zoomSteps; // Time per step
+
+    let stepSize = (targetHfov - startHfov) / zoomSteps;
+    let currentStep = 0;
+
+    let zoomInterval = setInterval(function () {
+      if (currentStep >= zoomSteps) {
+        clearInterval(zoomInterval); // Stop zooming
+        startAutoRotate(); //  Start auto-rotating after zoom completes
+      } else {
+        viewer.setHfov(viewer.getHfov() + stepSize);
+        currentStep++;
+      }
+    }, stepTime);
+  }
+
+  // Step 2: Start rotation after zoom out completes
+  function startAutoRotate() {
+    viewer.startAutoRotate(2); // Begin slow rotation
+  }
+
+  // Start zooming out after the scene loads
+  viewer.on("load", function () {
+    zoomOutGradually(110, 5000); //  Slowly zoom out over 5 seconds
   });
 
   // Custom Zoom & Fullscreen Controls
@@ -375,30 +408,6 @@
 
   viewer.on('touchstart', function () {
     viewer.stopAutoRotate();
-  });
-
-  // ---------------------------------------
-  // CIRCULAR SHADOW SCROLL HINT
-  // ---------------------------------------
-  document.addEventListener("DOMContentLoaded", function () {
-      var textOverlay = document.getElementById("textOverlay");
-
-      function checkScroll() {
-          if (textOverlay.scrollHeight > textOverlay.clientHeight) {
-              textOverlay.classList.remove("no-shadow"); // Show shadow if content is scrollable
-          } else {
-              textOverlay.classList.add("no-shadow"); // Hide shadow if no scrolling needed
-          }
-      }
-
-      // Hide the shadow when user scrolls
-      textOverlay.addEventListener("scroll", function () {
-          if (textOverlay.scrollTop > 5) { 
-              textOverlay.classList.add("no-shadow"); 
-          }
-      });
-
-      checkScroll(); // Run on page load
   });
 
 </script>
