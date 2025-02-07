@@ -27,13 +27,13 @@
     }
 
     ::selection {
-    background: #000; /* black highlight */
-    color: #fff;      /* white text */
+      background: #000; /* black highlight */
+      color: #fff;      /* white text */
     }
 
     ::-moz-selection {
-    background: #000; 
-    color: #fff;
+      background: #000;
+      color: #fff;
     }
 
     /* ----------------------------------------------------------
@@ -53,10 +53,10 @@
     #customControls {
       position: fixed;
       top: 20px;
-      left: 20px; 
+      left: 20px;
       display: flex;
-      flex-direction: column;
-      gap: -4px;  
+      flex-direction: column; /* desktop: vertical */
+      gap: -4px;
       z-index: 9999;
     }
     .ctrlBtn {
@@ -64,25 +64,15 @@
       border: none;
       color: #fff;
       font-size: 24px;
-      font-weight: 700; 
+      font-weight: 700;
       cursor: pointer;
     }
     .ctrlBtn:hover {
       opacity: 0.7;
     }
-    @media (max-width: 600px) {
-      #customControls {
-        top: 10px;
-        left: 10px;
-        gap: 4px;
-      }
-      .ctrlBtn {
-        font-size: 20px;
-      }
-    }
 
     /* ----------------------------------------------------------
-       TOP-RIGHT CORNER (EMAIL) 
+       TOP-RIGHT CORNER (EMAIL)
        ---------------------------------------------------------- */
     #topRightCorner {
       position: fixed;
@@ -91,20 +81,12 @@
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
       z-index: 9999;
-      font-size: 1.5em;
-      font-weight: 600; /* Same as corner titles */
-    }
-    @media (max-width: 600px) {
-      #topRightCorner {
-        top: 80px;
-        right: 80px;
-        font-size: 1.7em;
-      }
+      font-size: 1.7em;   /* desktop size */
+      font-weight: 600;   /* same as corner titles */
     }
 
     /* ----------------------------------------------------------
        MAIN TEXT OVERLAY
-       Always centered, but narrower and more padding => more margin space
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
@@ -117,39 +99,30 @@
       max-height: 90vh;
       overflow-y: auto;
       pointer-events: auto;
-      width: 60%;       /* narrower => more space around */
+      width: 60%;
       max-width: 600px;
-      padding: 20px;    /* more padding => extra margin inside box */
+      padding: 20px;
       box-sizing: border-box;
     }
 
-    /* On phones => narrower again => 60%, same extra padding */
-    @media (max-width: 600px) {
-      #textOverlay {
-        width: 60%;
-        max-width: none;
-        padding: 20px;
-      }
-    }
-
-    /* Title: 2em, bold (unchanged) */
+    /* Title: 2em, bold */
     #textOverlay .title {
       font-size: 2em;
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
-    /* "Contemplación…" => bold, size 14, left-aligned */
+    /* Bold, size 14, left-aligned */
     #textOverlay .subtitle {
       font-size: 14px;
       font-weight: 700;
       margin-bottom: 1em;
       text-align: left;
     }
-    /* The quote => right aligned, normal italic (weight 400) */
+    /* Quote => right aligned italic */
     .intro {
       font-size: 13px;
       font-style: italic;
-      font-weight: 400;   /* normal */
+      font-weight: 400;   
       line-height: 1.4;
       margin: 0.6em 0;
       text-align: right;
@@ -161,27 +134,24 @@
       line-height: 1.4;
       margin: 1.1em 0;
     }
-    /* Right-align "Raúl Márquez, 2025" */
+    /* Right-align final credit */
     .body.finalCredit {
       text-align: right;
     }
 
     /* ----------------------------------------------------------
-       CORNERS (ALWAYS VISIBLE, even on mobile)
-       - Corner Titles => 2em, semibold(600)
-       - Corner Body => 14px, weight 400
-       - Separate lines EXACTLY as requested
+       CORNERS (ALWAYS VISIBLE)
        ---------------------------------------------------------- */
     .cornerBox {
       position: fixed;
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
       z-index: 9999;
-      width: 240px; 
+      width: 240px;
       box-sizing: border-box;
     }
     .cornerTitle {
-      font-size: 1.5em;
+      font-size: 1.7em;
       font-weight: 600;
       margin-bottom: 10px;
       display: block;
@@ -201,6 +171,39 @@
       right: 40px;
       text-align: left;
     }
+
+    /* ==========================================================
+       MOBILE-ONLY CHANGES (NO CHANGES TO DESKTOP)
+       ========================================================== */
+    @media (max-width: 600px) {
+
+      /* Controls => horizontal instead of vertical */
+      #customControls {
+        top: 10px;
+        left: 10px;
+        flex-direction: row; /* horizontal layout on mobile */
+        gap: 4px;            /* small gap horizontally */
+      }
+      .ctrlBtn {
+        font-size: 20px;
+      }
+
+      /* Email => smaller for mobile */
+      #topRightCorner {
+        top: 10px;
+        right: 10px;
+        font-size: 1.3em;  /* smaller than desktop 1.7em */
+      }
+
+      /* Corner titles => smaller, e.g. 1.3em */
+      .cornerTitle {
+        font-size: 1.3em !important; 
+      }
+
+      /* main textOverlay => keep as is or tweak if needed?
+         Currently no further changes, so it remains the same. 
+       */
+    }
   </style>
 </head>
 <body>
@@ -215,10 +218,10 @@
     <button class="ctrlBtn" id="toggleFullscreen">[ ]</button>
   </div>
 
-  <!-- Top-right Email => 2em semibold -->
+  <!-- Top-right Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- MAIN TEXT OVERLAY (Centered, Scrollable, Narrow Enough to Drag) -->
+  <!-- MAIN TEXT OVERLAY (Desktop left as-is) -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <br>
@@ -268,7 +271,7 @@
     </p>
   </div>
 
-  <!-- CORNERS (ALWAYS VISIBLE) -->
+  <!-- CORNERS (Always visible) -->
   <div id="bottomLeftCorner" class="cornerBox">
     <span class="cornerTitle">Centro Cultural Plaza Fátima</span>
     <div class="cornerBody">
@@ -294,7 +297,7 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the panorama. No default controls => user can drag to rotate.
+    // Initialize the panorama (drag to rotate)
     var viewer = pannellum.viewer('panorama', {
       type: 'equirectangular',
       panorama: '/assets/test7.jpg', // Replace with your 360 image path
@@ -318,4 +321,3 @@
   </script>
 </body>
 </html>
-  
