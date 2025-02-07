@@ -30,7 +30,6 @@
       background: #000; /* black highlight */
       color: #fff;      /* white text */
     }
-
     ::-moz-selection {
       background: #000;
       color: #fff;
@@ -55,7 +54,7 @@
       top: 20px;
       left: 20px;
       display: flex;
-      flex-direction: column; /* desktop: vertical */
+      flex-direction: column; /* Desktop: vertical stack */
       gap: -4px;
       z-index: 9999;
     }
@@ -70,6 +69,7 @@
     .ctrlBtn:hover {
       opacity: 0.7;
     }
+    /* MOBILE: controls horizontal in prior code; unchanged for desktop here */
 
     /* ----------------------------------------------------------
        TOP-RIGHT CORNER (EMAIL)
@@ -81,12 +81,12 @@
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
       z-index: 9999;
-      font-size: 1.7em;   /* desktop size */
-      font-weight: 600;   /* same as corner titles */
+      font-size: 1.7em;
+      font-weight: 600; /* Same as corner titles */
     }
 
     /* ----------------------------------------------------------
-       MAIN TEXT OVERLAY
+       MAIN TEXT OVERLAY (Desktop)
        ---------------------------------------------------------- */
     #textOverlay {
       position: fixed;
@@ -96,7 +96,7 @@
       z-index: 999;
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
-      max-height: 90vh;
+      max-height: 90vh;  /* For desktop, 90vh */
       overflow-y: auto;
       pointer-events: auto;
       width: 60%;
@@ -111,7 +111,7 @@
       font-weight: 700;
       margin: 0 0 0.3em 0;
     }
-    /* Bold, size 14, left-aligned */
+    /* "Contemplación…" => bold, 14px, left-aligned */
     #textOverlay .subtitle {
       font-size: 14px;
       font-weight: 700;
@@ -122,12 +122,12 @@
     .intro {
       font-size: 13px;
       font-style: italic;
-      font-weight: 400;   
+      font-weight: 400;
       line-height: 1.4;
       margin: 0.6em 0;
       text-align: right;
     }
-    /* Body: 12px normal */
+    /* Body paragraphs */
     .body {
       font-size: 12px;
       font-weight: 400;
@@ -147,7 +147,7 @@
       color: #fff;
       text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
       z-index: 9999;
-      width: 240px;
+      width: 260px;
       box-sizing: border-box;
     }
     .cornerTitle {
@@ -158,10 +158,9 @@
     }
     .cornerBody {
       font-size: 13px;
-      font-weight: 600; 
+      font-weight: 600;
       line-height: 1.2;
     }
-
     #bottomLeftCorner {
       bottom: 40px;
       left: 40px;
@@ -173,36 +172,34 @@
     }
 
     /* ==========================================================
-       MOBILE-ONLY CHANGES (NO CHANGES TO DESKTOP)
+       MOBILE-ONLY CHANGES
+       (No changes to desktop layout)
        ========================================================== */
     @media (max-width: 600px) {
 
-      /* Controls => horizontal instead of vertical */
-      #customControls {
-        top: 10px;
-        left: 10px;
-        flex-direction: row; /* horizontal layout on mobile */
-        gap: 4px;            /* small gap horizontally */
-      }
-      .ctrlBtn {
-        font-size: 20px;
+      /* MAIN TEXT BOX: more offset from top, wider, 
+         limit height so it doesn't overlap corners. */
+      #textOverlay {
+        top: 55%;
+        transform: translate(-50%, -55%);
+        width: 70%;        /* a bit wider than 60% */
+        max-height: 60vh;  /* hides excess text; user can scroll */
       }
 
-      /* Email => smaller for mobile */
-      #topRightCorner {
-        top: 10px;
-        right: 10px;
-        font-size: 1.3em;  /* smaller than desktop 1.7em */
+      /* BOTTOM CORNERS: more separated from each other & possibly smaller */
+      #bottomLeftCorner {
+        bottom: 50px;   /* give extra space from bottom */
+        left: 20px;
+      }
+      #bottomRightCorner {
+        bottom: 50px;
+        right: 20px;
       }
 
-      /* Corner titles => smaller, e.g. 1.3em */
+      /* Corner title => smaller on mobile (tasteful) */
       .cornerTitle {
-        font-size: 1.3em !important; 
+        font-size: 1.3em !important;
       }
-
-      /* main textOverlay => keep as is or tweak if needed?
-         Currently no further changes, so it remains the same. 
-       */
     }
   </style>
 </head>
@@ -221,7 +218,7 @@
   <!-- Top-right Email -->
   <div id="topRightCorner">info@blast-o.com</div>
 
-  <!-- MAIN TEXT OVERLAY (Desktop left as-is) -->
+  <!-- MAIN TEXT OVERLAY -->
   <div id="textOverlay">
     <div class="title">MUTANZA</div>
     <br>
@@ -297,7 +294,7 @@
   <!-- Panellum JS -->
   <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script>
-    // Initialize the panorama (drag to rotate)
+    // Initialize the panorama. No default controls => user can drag to rotate.
     var viewer = pannellum.viewer('panorama', {
       type: 'equirectangular',
       panorama: '/assets/test7.jpg', // Replace with your 360 image path
