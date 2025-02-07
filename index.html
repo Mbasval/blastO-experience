@@ -26,6 +26,16 @@
       height: 100%;
     }
 
+    ::selection {
+    background: #000; /* black highlight */
+    color: #fff;      /* white text */
+    }
+
+    ::-moz-selection {
+    background: #000; 
+    color: #fff;
+    }
+
     /* ----------------------------------------------------------
        PANORAMA (Fullscreen behind everything)
        ---------------------------------------------------------- */
@@ -79,7 +89,7 @@
       top: 40px;
       right: 40px;
       color: #fff;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+      text-shadow: 0 0 5px rgba(0,0,0,0.7);
       z-index: 9999;
       font-size: 1.5em;
       font-weight: 600; /* Same as corner titles */
@@ -103,7 +113,7 @@
       transform: translate(-50%, -50%);
       z-index: 999;
       color: #fff;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+      text-shadow: 0 0 5px rgba(0,0,0,0.7);
       max-height: 90vh;
       overflow-y: auto;
       pointer-events: auto;
@@ -137,7 +147,7 @@
     }
     /* The quote => right aligned, normal italic (weight 400) */
     .intro {
-      font-size: 12px;
+      font-size: 13px;
       font-style: italic;
       font-weight: 400;   /* normal */
       line-height: 1.4;
@@ -165,7 +175,7 @@
     .cornerBox {
       position: fixed;
       color: #fff;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+      text-shadow: 0 0 5px rgba(0,0,0,0.7);
       z-index: 9999;
       width: 240px; 
       box-sizing: border-box;
