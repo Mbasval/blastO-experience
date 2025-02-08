@@ -22,36 +22,47 @@
       width: 100vw;
       height: 100vh;
       background: #000;
-      z-index: 10000; /* Ensures it's on top */
+      z-index: 10000; /* Ensure it's on top */
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      transition: opacity 1s ease-in-out; /* Smooth fade-out */
+      transition: opacity 1s ease-in-out; /* Fade-out effect */
     }
 
         /* ----------------------------------------------------------
        TEXT
        ---------------------------------------------------------- */
     .loading-text {
-      font-size: 5em; /* Desktop large font */
-      font-weight: bold;
-      color: #fff;
-      text-align: center;
-      font-family: 'Arimo', sans-serif;
-      letter-spacing: 2px;
-      margin-bottom: 40px; /* Space for loading bar */
-    }
+        font-size: 5em;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        font-family: 'Arimo', sans-serif;
+        letter-spacing: 2px;
+        margin-bottom: 40px; /* Space for loading bar */
+      }
 
      /* ----------------------------------------------------------
        LOADING BAR 
        ---------------------------------------------------------- */
-    .loading-bar {
+
+    .loading-bar-container {
+      width: 100vw; /* Full screen width */
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2); /* Subtle background */
+      overflow: hidden;
       position: relative;
+    }
+    
+    .loading-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 0%;
-      height: 4px; /* Thin bar */
+      height: 100%;
       background: #fff;
-      transition: width 4s linear; /* Smooth width animation */
+      transition: width 4s linear; /* Smoothly expands over 4s */
     }
 
      /* ----------------------------------------------------------
@@ -71,11 +82,11 @@
         margin-bottom: 20px; /* Reduce space */
       }
     
-      .loading-bar {
+      .loading-bar-container {
         height: 2px; /* Even thinner bar on mobile */
       }
     }
-
+    
 
 
     /* ----------------------------------------------------------
@@ -139,9 +150,11 @@
     }
 
     /* ----------------------------------------------------------
-       CONTACT
+       CONTACT CORNERT TOP
        ---------------------------------------------------------- */
    
+
+
 
     #topRightCorner {
   position: fixed;
@@ -149,27 +162,29 @@
   right: 40px;
   color: #fff;
   z-index: 9999;
-  text-align: right;
-  width: 250px;
+  text-align: right;  /* Ensures everything is aligned to the right */
   display: flex;
   flex-direction: column;
-  align-items: flex-end; 
+  align-items: flex-end; /* Ensures both lines align properly */
+  width: max-content; /* Adjusts width dynamically to fit text */
 }
 
+/* Style for the title (@blasto__) */
 #topRightCorner .cornerTitle {
-  font-size: 1.7em; 
+  font-size: 1.7em;
   font-weight: 600;
-  margin-bottom: 5px; 
-  display: block;
+  white-space: nowrap; /* Prevents wrapping */
 }
 
+/* Style for the email (info@blast-o.com) */
 #topRightCorner .cornerBody {
-  font-size: 13px; 
-  font-weight: 600; 
-  line-height: 1.2;
-  text-align: left; 
-  min-width: max-content; 
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap; /* Prevents line breaks */
 }
+
+    
+    
     
     /* ----------------------------------------------------------
        MAIN TEXT 
@@ -344,20 +359,21 @@
     var preloader = document.getElementById("preloader");
     var loadingBar = document.querySelector(".loading-bar");
 
-    // Expand loading bar over 4 seconds
+    // Expand loading bar from left to right over 4 seconds
     setTimeout(() => {
-      loadingBar.style.width = "100vw"; // Expands fully across the screen
-    }, 200); // Small delay to make animation smoother
+      loadingBar.style.width = "100%"; // Expands fully across the screen
+    }, 200); // Small delay for smoother animation
 
-    // Wait for the loading bar to fully complete before fading out preloader
+    // Wait for the loading bar to complete before fading out preloader
     setTimeout(() => {
-      preloader.classList.add("hidden"); // Fade out
+      preloader.classList.add("hidden"); // Start fade-out
       setTimeout(() => {
-        preloader.style.display = "none"; // Remove after fade-out
+        preloader.style.display = "none"; // Remove from DOM after fade
       }, 1000);
-    }, 4200); // Wait 4.2 seconds before hiding preloader
+    }, 4200); // Ensures fade-out happens after the loading bar finishes
   });
 </script>
+
 
     /* ----------------------------------------------------------
        LOADING
@@ -367,9 +383,12 @@
 <div id="preloader">
   <div class="preloader-content">
     <div class="loading-text">MUTANZA</div>
-    <div class="loading-bar"></div>
+    <div class="loading-bar-container">
+      <div class="loading-bar"></div>
+    </div>
   </div>
 </div>
+
 
     /* ----------------------------------------------------------
        MAIN PAGE
