@@ -66,6 +66,7 @@
       font-size: 24px;
       font-weight: 700;
       cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
     }
     .ctrlBtn:hover {
       opacity: 0.7;
@@ -77,30 +78,33 @@
    
 
     #topRightCorner {
-      position: fixed;
-      top: 40px;
-      right: 40px;
-      color: #fff;
-      z-index: 9999;
-      text-align: left;
-      width: 250px; 
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end; 
-    }
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  color: #fff;
+  text-shadow: -1px 1px 0px rgba(0, 0, 0, 1);
+  z-index: 9999;
+  text-align: right;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+}
 
-    #topRightCorner .cornerTitle {
-      font-size: 1.7em;
-      font-weight: 600;
-      margin-bottom: 10px;
-      display: block;
-    }
+#topRightCorner .cornerTitle {
+  font-size: 1.7em; 
+  font-weight: 600;
+  margin-bottom: 5px; 
+  display: block;
+}
 
-    #topRightCorner .cornerBody {
-      font-size: 13px;
-      font-weight: 600; 
-      line-height: 1.2;
-    }
+#topRightCorner .cornerBody {
+  font-size: 13px; 
+  font-weight: 600; 
+  line-height: 1.2;
+  text-align: left; 
+  min-width: max-content; 
+}
     
     /* ----------------------------------------------------------
        MAIN TEXT 
