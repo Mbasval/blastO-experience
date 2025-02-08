@@ -12,6 +12,63 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 
   <style>
+
+
+    /* ===========================
+   FULLSCREEN BLACK LOADING SCREEN
+   =========================== */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 10000; /* Ensure it's on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity 1s ease-in-out; /* Fade-out effect */
+}
+
+/* ===========================
+   CENTERED "MUTANZA" TEXT
+   =========================== */
+.loading-text {
+  font-size: 5em;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  font-family: 'Arimo', sans-serif;
+  letter-spacing: 2px;
+}
+
+/* ===========================
+   LOADING BAR (1/4 screen height)
+   =========================== */
+.loading-bar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px; /* Thin bar */
+  height: 0;
+  background: #fff;
+  transition: height 3.5s linear; /* Smoothly increases height */
+}
+
+/* ===========================
+   FADE OUT EFFECT
+   =========================== */
+.hidden {
+  opacity: 0;
+  pointer-events: none; /* Prevents interaction */
+}
+
+
+
+    
     /* ----------------------------------------------------------
        GLOBAL
        ---------------------------------------------------------- */
@@ -268,6 +325,40 @@
     }
   </style>
 </head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var preloader = document.getElementById("preloader");
+    var loadingBar = document.querySelector(".loading-bar");
+
+    // Expand loading bar over 3.5 seconds
+    setTimeout(() => {
+      loadingBar.style.height = "25vh"; // 1/4 of the screen
+    }, 200); // Slight delay to make animation smoother
+
+    // Wait for FULL page load including the 3D image
+    window.onload = function () {
+      setTimeout(() => {
+        preloader.classList.add("hidden"); // Fade out
+        setTimeout(() => {
+          preloader.style.display = "none"; // Remove after fade-out
+        }, 1000);
+      }, 500); // Short delay before removing
+    };
+  });
+</script>
+
+
+
+  <!-- Preloader Screen -->
+<div id="preloader">
+  <div class="preloader-content">
+    <div class="loading-text">MUTANZA</div>
+    <div class="loading-bar"></div>
+  </div>
+</div>
+
+  
 <body>
 
   <div id="panorama"></div>
