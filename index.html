@@ -421,7 +421,7 @@
 
   <div id="topRightCorner">
     <span class="cornerTitle">
-        <a href="https://www.instagram.com/blasto__" target="_blank">@blasto__</a>
+        <a href="https://www.instagram.com/blasto__" target="_blank" id="instagramLink">@blasto__</a>
     </span>
     <div class="cornerBody">
         <a href="mailto:info@blast-o.com">info@blast-o.com</a>
@@ -539,6 +539,29 @@
   viewer.on('touchstart', function () {
     viewer.stopAutoRotate();
   });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var instagramLink = document.getElementById("instagramLink");
+
+    if (instagramLink) {
+        instagramLink.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent immediate navigation
+
+            var instagramAppLink = "instagram://user?username=blasto__"; // Instagram App Deep Link
+            var instagramWebLink = "https://www.instagram.com/blasto__"; // Fallback Web Link
+
+            // Try to open the Instagram app
+            window.location.href = instagramAppLink;
+
+            // If the app doesn’t open after 500ms, redirect to web version
+            setTimeout(function () {
+                window.location.href = instagramWebLink;
+            }, 500);
+        });
+    }
+});
+
 
 </script>
 
