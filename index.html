@@ -153,35 +153,43 @@
        CONTACT CORNERT TOP
        ---------------------------------------------------------- */
    
-
-
-
-    #topRightCorner {
-  position: fixed;
-  top: 40px;
-  right: 40px;
-  color: #fff;
-  z-index: 9999;
-  text-align: right;  /* Ensures everything is aligned to the right */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Ensures both lines align properly */
-  width: max-content; /* Adjusts width dynamically to fit text */
+#topRightCorner {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    color: #fff;
+    z-index: 9999;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Keeps everything properly aligned */
+    width: max-content; /* Adjusts width dynamically to fit text */
 }
 
-/* Style for the title (@blasto__) */
 #topRightCorner .cornerTitle {
-  font-size: 1.7em;
-  font-weight: 600;
-  white-space: nowrap; /* Prevents wrapping */
+    font-size: 1.7em;   /* Keep the same size */
+    font-weight: 600;   /* Keep the same weight */
 }
 
-/* Style for the email (info@blast-o.com) */
 #topRightCorner .cornerBody {
-  font-size: 14px;
-  font-weight: 400;
-  white-space: nowrap; /* Prevents line breaks */
+    font-size: 13px;   /* Keep the same size as before */
+    font-weight: 400;  /* Keep the same weight */
 }
+
+#topRightCorner a {
+    color: inherit;      /* Inherits the original text color */
+    text-decoration: none; /* Removes underline */
+}
+
+#topRightCorner a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+
+
+
+    
+
 
     
     
@@ -407,8 +415,12 @@
 
 
   <div id="topRightCorner">
-    <a href="https://www.instagram.com/blasto__/?hl=es" target="_blank" class="contact-link">@blasto__</a>
-    <a href="mailto:info@blast-o.com" class="contact-link">info@blast-o.com</a>
+    <span class="cornerTitle">
+        <a href="https://www.instagram.com/blasto__" target="_blank">@blasto__</a>
+    </span>
+    <div class="cornerBody">
+        <a href="mailto:info@blast-o.com">info@blast-o.com</a>
+    </div>
 </div>
 
   
