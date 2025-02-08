@@ -316,16 +316,18 @@
         line-height: 1.1; 
       }
 
+
       #bottomLeftCorner,
       #bottomRightCorner {
-        bottom: 25px;
-        /*width: 40%;*/
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        
-      }
+            position: fixed;
+            bottom: 25px;  /* Move them slightly closer to the bottom */
+            width: auto;  /* Prevents boxes from stretching */
+            max-width: 45%;  /* Ensures they stay within their half */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
 
       #bottomLeftCorner {
         left: 25px;
