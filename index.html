@@ -13,8 +13,7 @@
 
   <style>
 
-
-    /* ===========================
+/* ===========================
    FULLSCREEN BLACK LOADING SCREEN
    =========================== */
 #preloader {
@@ -24,38 +23,36 @@
   width: 100vw;
   height: 100vh;
   background: #000;
-  z-index: 10000; /* Ensure it's on top */
+  z-index: 10000; /* Ensures it's on top */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  transition: opacity 1s ease-in-out; /* Fade-out effect */
+  transition: opacity 1s ease-in-out; /* Smooth fade-out */
 }
 
 /* ===========================
-   CENTERED "MUTANZA" TEXT
+   CENTERED "MUTANZA" TEXT (Desktop & Mobile)
    =========================== */
 .loading-text {
-  font-size: 5em;
+  font-size: 5em; /* Desktop large font */
   font-weight: bold;
   color: #fff;
   text-align: center;
   font-family: 'Arimo', sans-serif;
   letter-spacing: 2px;
+  margin-bottom: 40px; /* Space for loading bar */
 }
 
 /* ===========================
-   LOADING BAR (1/4 screen height)
+   LOADING BAR (HORIZONTAL - FULL WIDTH)
    =========================== */
 .loading-bar {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px; /* Thin bar */
-  height: 0;
+  position: relative;
+  width: 0%;
+  height: 4px; /* Thin bar */
   background: #fff;
-  transition: height 3.5s linear; /* Smoothly increases height */
+  transition: width 4s linear; /* Smooth width animation */
 }
 
 /* ===========================
@@ -65,6 +62,21 @@
   opacity: 0;
   pointer-events: none; /* Prevents interaction */
 }
+
+/* ===========================
+   MOBILE STYLES (Smaller screens)
+   =========================== */
+@media (max-width: 600px) {
+  .loading-text {
+    font-size: 2.5em; /* Smaller text for mobile */
+    margin-bottom: 20px; /* Reduce space */
+  }
+
+  .loading-bar {
+    height: 2px; /* Even thinner bar on mobile */
+  }
+}
+
 
 
 
@@ -331,32 +343,31 @@
     var preloader = document.getElementById("preloader");
     var loadingBar = document.querySelector(".loading-bar");
 
-    // Expand loading bar over 3.5 seconds
+    // Expand loading bar over 4 seconds
     setTimeout(() => {
-      loadingBar.style.height = "25vh"; // 1/4 of the screen
-    }, 200); // Slight delay to make animation smoother
+      loadingBar.style.width = "100vw"; // Expands fully across the screen
+    }, 200); // Small delay to make animation smoother
 
-    // Wait for FULL page load including the 3D image
-    window.onload = function () {
+    // Wait for the loading bar to fully complete before fading out preloader
+    setTimeout(() => {
+      preloader.classList.add("hidden"); // Fade out
       setTimeout(() => {
-        preloader.classList.add("hidden"); // Fade out
-        setTimeout(() => {
-          preloader.style.display = "none"; // Remove after fade-out
-        }, 1000);
-      }, 500); // Short delay before removing
-    };
+        preloader.style.display = "none"; // Remove after fade-out
+      }, 1000);
+    }, 4200); // Wait 4.2 seconds before hiding preloader
   });
 </script>
 
 
 
-  <!-- Preloader Screen -->
+ <!-- Preloader Screen -->
 <div id="preloader">
   <div class="preloader-content">
     <div class="loading-text">MUTANZA</div>
     <div class="loading-bar"></div>
   </div>
 </div>
+
 
   
 <body>
