@@ -500,72 +500,78 @@
   </div>
 
 
-<!-- Panellum JS -->
+<!-- Panellum JS v2.5.6 -->
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
-  var isMobile = window.innerWidth <= 700; 
+  (function() {
+    var isMobile = window.innerWidth <= 700;
+    var initialHfov = 110;
+    var rotateSpeed = isMobile ? -2 : -2;
+    var inactivityTime = 10000; // 10 000 ms = 10 s
+    var restartTimer;
 
-  var viewer = pannellum.viewer('panorama', {
-    type: 'equirectangular',
-    panorama: '/assets/test7.jpg', 
-    autoLoad: true,
-    showControls: false,
+    // Inicializa viewer
+    var viewer = pannellum.viewer('panorama', {
+      type: 'equirectangular',
+      panorama: '/assets/test7.jpg',
+      autoLoad: true,
+      showControls: false,
+      yaw: 0,
+      pitch: 0,
+      hfov: initialHfov,
+      autoRotate: rotateSpeed,
+      autoRotateInactivityDelay: inactivityTime
+    });
 
-    yaw: 0,    // Starting horizontal angle
-    pitch: 0,  // Starting vertical angle
-    hfov: 110, // Default field of view (normal zoom)
-
-    autoRotate: isMobile ? -2 : -2, 
-    autoRotateInactivityDelay: 3000
-  });
-
-  // Custom Zoom & Fullscreen Controls
-  document.getElementById('zoomIn').addEventListener('click', function () {
-    viewer.setHfov(viewer.getHfov() - 5);
-  });
-
-  document.getElementById('zoomOut').addEventListener('click', function () {
-    viewer.setHfov(viewer.getHfov() + 5);
-  });
-
-  document.getElementById('toggleFullscreen').addEventListener('click', function () {
-    viewer.toggleFullscreen();
-  });
-
-  // Stop auto-rotation if user interacts
-  viewer.on('mousedown', function () {
-    viewer.stopAutoRotate();
-  });
-
-  viewer.on('touchstart', function () {
-    viewer.stopAutoRotate();
-  });
-
-
-  document.addEventListener("DOMContentLoaded", function () {
-    var instagramLink = document.getElementById("instagramLink");
-
-    if (instagramLink) {
-        instagramLink.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent immediate navigation
-
-            var instagramAppLink = "instagram://user?username=blasto__"; // Instagram App Deep Link
-            var instagramWebLink = "https://www.instagram.com/blasto__"; // Fallback Web Link
-
-            // Try to open the Instagram app
-            window.location.href = instagramAppLink;
-
-            // If the app doesn’t open after 500ms, redirect to web version
-            setTimeout(function () {
-                window.location.href = instagramWebLink;
-            }, 500);
-        });
+    // Función para pausar y programar reinicio
+    function pauseAndScheduleRestart() {
+      viewer.stopAutoRotate();
+      clearTimeout(restartTimer);
+      restartTimer = setTimeout(function() {
+        // Zoom out a hfov inicial
+        viewer.setHfov(initialHfov);
+        // Reanudar auto-rotación
+        viewer.startAutoRotate(rotateSpeed);
+      }, inactivityTime);
     }
-});
 
+    // Listeners de interacción: panning
+    viewer.on('mousedown', pauseAndScheduleRestart);
+    viewer.on('touchstart', pauseAndScheduleRestart);
 
+    // Listeners de zoom (botones)
+    document.getElementById('zoomIn').addEventListener('click', function() {
+      pauseAndScheduleRestart();
+      viewer.setHfov(viewer.getHfov() - 5);
+    });
+    document.getElementById('zoomOut').addEventListener('click', function() {
+      pauseAndScheduleRestart();
+      viewer.setHfov(viewer.getHfov() + 5);
+    });
+
+    // Fullscreen no afecta rotación, pero si quieres que también pause:
+    document.getElementById('toggleFullscreen').addEventListener('click', function () {
+      pauseAndScheduleRestart();
+      viewer.toggleFullscreen();
+    });
+
+    // Deep link Instagram (igual que antes)
+    document.addEventListener('DOMContentLoaded', function () {
+      var instagramLink = document.getElementById('instagramLink');
+      if (instagramLink) {
+        instagramLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.location.href = 'instagram://user?username=blasto__';
+          setTimeout(function () {
+            window.location.href = 'https://www.instagram.com/blasto__';
+          }, 500);
+        });
+      }
+    });
+  })();
 </script>
+
 
 
 </body>
